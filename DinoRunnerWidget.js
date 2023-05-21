@@ -34,6 +34,9 @@
                 0% { right: 0; }
                 100% { right: 100%; }
             }
+            .paused {
+                animation-play-state: paused;
+            }
         </style>
         <div class="game-container">
             <div class="player"></div>
@@ -135,8 +138,10 @@
             this._isPaused = !this._isPaused;
             if(this._isPaused) {
                 this._pauseButton.textContent = 'Resume';
+                this._obstacle.classList.add('paused');
             } else {
                 this._pauseButton.textContent = 'Pause';
+                this._obstacle.classList.remove('paused');
             }
         }
     }
