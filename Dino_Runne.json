@@ -1,40 +1,46 @@
 {
-	"name": "dinogamewidget",
-	"description": "Dino Game Widget",
-	"newInstancePrefix": "dinogamewidget",
-	"eula": "",
-	"vendor": "Planifyit",
-	"license": "",
-	"id": "dinogamewidget",
-	"version": "1.0.1",
-	"icon": "",
-	"webcomponents": [
-		{
-			"kind": "main",
-			"tag": "dino-game-widget",
-			"url": "https://planifyit.github.io/SAC_game/DinoRunnerWidget.js",
-			"integrity": "",
-			"ignoreIntegrity": true
-		}		
-	],
-	"properties": {
-		"width": {
-			"type": "integer",
-			"default": 300
-		},
-		"height": {
-			"type": "integer",
-			"default": 200
-		}
-	},
-	"methods": {
-		"startGame": {
-			"description": "Start the game"
-		}
-	},
-	"events": {
-		"onGameOver": {
-			"description": "Called when game over"
-		}
-	}
+    "name": "dinoRunnerWidget",
+    "description": "Dino Runner Game Widget",
+    "newInstancePrefix": "dinoRunnerWidget",
+    "eula": "",
+    "vendor": "Planifyit",
+    "license": "",
+    "id": "dinoRunnerWidget",
+    "version": "1.0.1",
+    "icon": "",
+    "webcomponents": [
+        {
+            "kind": "main",
+            "tag": "dino-runner-widget",
+            "url": "https://planifyit.github.io/SAC_DinoRunner/DinoRunnerWidget.js",
+            "integrity": "",
+            "ignoreIntegrity": true
+        }       
+    ],
+    "properties": {
+        "width": {
+            "type": "integer",
+            "default": 300
+        },
+        "height": {
+            "type": "integer",
+            "default": 400
+        }
+    },
+    "methods": {
+        "startGame": {
+            "description": "Starts the Dino Runner game."
+        },
+        "endGame": {
+            "description": "Ends the current game."
+        }
+    },
+    "events": {
+        "onGameEnd": {
+            "description": "Called when the game ends."
+        },
+        "onScoreUpdate": {
+            "description": "Called when the player's score is updated."
+        }
+    }
 }
