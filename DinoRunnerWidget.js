@@ -79,50 +79,67 @@
             this._jumpButton.style.display = 'block';
             this._pauseButton.style.display = 'block';
         }
- _gameLoop() {
-        if (this._isPaused) return;
 
-        const playerRect = this._player.getBoundingClientRect();
-        const obstacleRect = this._obstacle.getBoundingClientRect();
+        _gameLoop() {
+            if (this._isPaused) return;
 
-        // Detect collision
-        if (playerRect.x < obstacleRect.x + obstacleRect.width &&
-            playerRect.x + playerRect.width > obstacleRect.x &&
-            playerRect.y < obstacleRect.y + obstacleRect.height &&
-            playerRect.height + playerRect.y > obstacleRect.y &&
-            this._player.style.bottom === '0px') {
-            this._endGame();
+            const playerRect = this._player.getBoundingClientRect();
+            const obstacleRect = this._obstacle.getBoundingClientRect();
+
+            // Detect collision
+            if (playerRect.x < obstacleRect.x + obstacleRect.width &&
+                playerRect.x + playerRect.width > obstacleRect.x &&
+                playerRect.y < obstacleRect.y + obstacleRect.height &&
+                playerRect.height + playerRect.y > obstacleRect.y &&
+                this._player.style.bottom === '0px') {
+                this._endGame();
+            }
+
+            // Increase score if obstacle successfully avoided
+            if (obstacleRect.right < 0) {
+                this._score++;
+                this._scoreDisplay.textContent = 'Score: ' + this._score;
+                this._gameContainer.removeChild(this._obstacle);
+                this._obstacle = document.createElement('div');
+                this._obstacle.classList.add('obstacle');
+                this._gameContainer.appendChild(this._obstacle);
+            }
         }
 
-        // Increase score if obstacle successfully avoided
-        if (obstacleRect.right < 0) {
-            this._score++;
+        _endGame() {
+            clearInterval(this._gameInterval);
+            this._obstacle.remove();
+            alert('Game Over!');
+            this._replayButton.style.display = 'block';
+            this._jumpButton.style.display = 'none';
+            this._pauseButton.style.display = 'none';
+        }
+
+        _replayGame() {
+            this._score = 0;
             this._scoreDisplay.textContent = 'Score: ' + this._score;
-            this._gameContainer.removeChild(this._obstacle);
-            this._obstacle = document.createElement('div');
-            this._obstacle.classList.add('obstacle');
-            this._gameContainer.appendChild(this._obstacle);
+            this._replayButton.style.display = 'none';
+            this._jumpButton.style.display = 'none';
+            this._pauseButton.style.display = 'none';
+            this._startGame();
+        }
+
+        _jump() {
+            this._player.style.bottom = '100px';
+            setTimeout(() => {
+                this._player.style.bottom = '0px';
+            }, 500);
+        }
+
+        _pause() {
+            this._isPaused = !this._isPaused;
+            if(this._isPaused) {
+                this._pauseButton.textContent = 'Resume';
+            } else {
+                this._pauseButton.textContent = 'Pause';
+            }
         }
     }
 
-    _endGame() {
-        clearInterval(this._gameInterval);
-        this._obstacle.remove();
-        alert('Game Over!');
-        this._gameOverScreen.style.display = 'block';
-        this._replayButton.style.display = 'block';
-        this._isPaused = true;
-    }
-
-    _replayGame() {
-        this._score = 0;
-        this._scoreDisplay.textContent = 'Score: ' + this._score;
-        this._gameOverScreen.style.display = 'none';
-        this._replayButton.style.display = 'none';
-        this._isPaused = false;
-        this._startGame();
-    }
-}
-
-customElements.define('dino-runner-widget', DinoRunner);
+    customElements.define('dino-runner-widget', DinoRunner);
 })();
