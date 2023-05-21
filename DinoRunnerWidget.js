@@ -2,37 +2,47 @@
     let tmpl = document.createElement('template');
     tmpl.innerHTML = `
         <style>
-            .game-container {
+            .game {
                 position: relative;
                 height: 200px;
-                width: 300px;
+                width: 500px;
                 border: 1px solid black;
             }
-            .player, .obstacle {
+
+            .dino {
                 position: absolute;
                 bottom: 0;
-            }
-            .player {
-                left: 10px;
-                height: 50px;
+                left: 50px;
                 width: 50px;
+                height: 50px;
                 background: green;
             }
+
             .obstacle {
-                right: 0;
-                height: 50px;
-                width: 50px;
-                background: red;
-                animation: moveObstacle 2s linear infinite;
-            }
-            .score {
                 position: absolute;
-                right: 10px;
-                top: 10px;
+                bottom: 0;
+                right: 0;
+                width: 50px;
+                height: 50px;
+                background: red;
+                animation: obstacle 1s infinite linear;
             }
-            @keyframes moveObstacle {
+
+            @keyframes obstacle {
                 0% { right: 0; }
                 100% { right: 100%; }
+            }
+
+            #start-button, #play-again {
+                position: relative;
+                margin: 10px;
+            }
+
+            #score {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 10px;
             }
         </style>
         <div class="game">
@@ -42,10 +52,8 @@
             <div id="score">0</div>
             <button id="play-again" style="display:none;">Play Again</button>
         </div>
-        <button class="start-button">Start Game</button>
-        <button class="replay-button" style="display: none;">Play Again</button>
     `;
-
+    
     class DinoRunner extends HTMLElement {
         constructor() {
             super();
