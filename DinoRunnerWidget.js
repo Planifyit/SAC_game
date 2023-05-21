@@ -23,12 +23,14 @@
                 height: 50px;
                 width: 50px;
                 background: red;
-                animation: moveObstacle 2s linear infinite;
             }
             .score {
                 position: absolute;
                 right: 10px;
                 top: 10px;
+            }
+            .animateObstacle {
+                animation: moveObstacle 2s linear infinite;
             }
             @keyframes moveObstacle {
                 0% { right: 0; }
@@ -67,6 +69,7 @@
             this._obstacle = document.createElement('div');
             this._obstacle.classList.add('obstacle');
             this._gameContainer.appendChild(this._obstacle);
+            this._obstacle.classList.add('animateObstacle');
             this._gameInterval = setInterval(this._gameLoop.bind(this), 50);
             this._startButton.style.display = 'none';
         }
@@ -91,21 +94,20 @@
                 this._obstacle = document.createElement('div');
                 this._obstacle.classList.add('obstacle');
                 this._gameContainer.appendChild(this._obstacle);
+                this._obstacle.classList.add('animateObstacle');
             }
         }
 
         _endGame() {
             clearInterval(this._gameInterval);
             this._obstacle.remove();
-                        alert('Game Over!');
-            this._gameOverScreen.style.display = 'block';
+            alert('Game Over!');
             this._replayButton.style.display = 'block';
         }
 
         _replayGame() {
             this._score = 0;
             this._scoreDisplay.textContent = 'Score: ' + this._score;
-            this._gameOverScreen.style.display = 'none';
             this._replayButton.style.display = 'none';
             this._startGame();
         }
