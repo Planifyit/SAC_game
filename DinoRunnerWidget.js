@@ -2,154 +2,115 @@
     let tmpl = document.createElement('template');
     tmpl.innerHTML = `
         <style>
-   .game {
+            .game-container {
                 position: relative;
                 height: 200px;
-                width: 500px;
+                width: 300px;
                 border: 1px solid black;
             }
-
-            .dino {
+            .player, .obstacle {
                 position: absolute;
                 bottom: 0;
-                left: 50px;
-                width: 50px;
+            }
+            .player {
+                left: 10px;
                 height: 50px;
+                width: 50px;
                 background: green;
             }
-
             .obstacle {
-                position: absolute;
-                bottom: 0;
                 right: 0;
-                width: 50px;
                 height: 50px;
+                width: 50px;
                 background: red;
-                animation: obstacle 1s infinite linear;
+                animation: moveObstacle 2s linear infinite;
             }
-
-            @keyframes obstacle {
+            .score {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+            }
+            @keyframes moveObstacle {
                 0% { right: 0; }
                 100% { right: 100%; }
             }
-
-            #start-button, #play-again {
-                position: relative;
-                margin: 10px;
-            }
-
-            #score {
-                position: absolute;
-                top: 0;
-                right: 0;
-                padding: 10px;
-            }
         </style>
-        <div class="game">
-            <div class="dino"></div>
-            <div class="obstacle"></div>
-            <button id="start-button">Start</button>
-            <div id="score">0</div>
-            <button id="play-again" style="display:none;">Play Again</button>
-            <div id="controls" style="display:none;">
-                <button id="move-up">↑</button>
-                <button id="move-down">↓</button>
-                <button id="move-left">←</button>
-                <button id="move-right">→</button>
-            </div>
+        <div class="game-container">
+            <div class="player"></div>
+            <div class="score">Score: 0</div>
         </div>
+        <button class="start-button">Start Game</button>
+        <button class="replay-button" style="display: none;">Play Again</button>
     `;
 
-    class DinoGame extends HTMLElement {
+    class DinoRunner extends HTMLElement {
         constructor() {
             super();
             this._shadowRoot = this.attachShadow({mode: 'open'});
             this._shadowRoot.appendChild(tmpl.content.cloneNode(true));
 
-            this._dino = this._shadowRoot.querySelector('.dino');
-            this._obstacle = this._shadowRoot.querySelector('.obstacle');
-            this._startButton = this._shadowRoot.querySelector('#start-button');
-            this._playAgainButton = this._shadowRoot.querySelector('#play-again');
-            this._scoreElement = this._shadowRoot.querySelector('#score');
-            this._controls = this._shadowRoot.querySelector('#controls');
+            this._gameContainer = this._shadowRoot.querySelector('.game-container');
+            this._startButton = this._shadowRoot.querySelector('.start-button');
+            this._replayButton = this._shadowRoot.querySelector('.replay-button');
+            this._scoreDisplay = this._shadowRoot.querySelector('.score');
 
-            this._moveUpButton = this._shadowRoot.querySelector('#move-up');
-            this._moveDownButton = this._shadowRoot.querySelector('#move-down');
-            this._moveLeftButton = this._shadowRoot.querySelector('#move-left');
-            this._moveRightButton = this._shadowRoot.querySelector('#move-right');
-
-            this._isJumping = false;
-            this._isGameRunning = false;
             this._score = 0;
         }
 
         connectedCallback() {
-            this._moveUpButton.addEventListener('click', this._move.bind(this, 'up'));
-            this._moveDownButton.addEventListener('click', this._move.bind(this, 'down'));
-            this._moveLeftButton.addEventListener('click', this._move.bind(this, 'left'));
-            this._moveRightButton.addEventListener('click', this._move.bind(this, 'right'));
             this._startButton.addEventListener('click', this._startGame.bind(this));
-            this._playAgainButton.addEventListener('click', this._resetGame.bind(this));
-        }
-
-        _move(direction) {
-            if (!this._isGameRunning) return;
-
-            switch (direction) {
-                case 'up':
-                    if (!this._isJumping) {
-                        this._isJumping = true;
-                        this._dino.style.bottom = '150px';
-                        setTimeout(() => {
-                            this._dino.style.bottom = '0px';
-                            this._isJumping = false;
-                        }, 500);
-                    }
-                    break;
-                // add additional cases here for other directions if needed
-            }
+            this._replayButton.addEventListener('click', this._replayGame.bind(this));
         }
 
         _startGame() {
-            this._isGameRunning = true;
-            this._scoreElement.textContent = this._score;
+            this._player = this._shadowRoot.querySelector('.player');
+            this._obstacle = document.createElement('div');
+            this._obstacle.classList.add('obstacle');
+            this._gameContainer.appendChild(this._obstacle);
+            this._gameInterval = setInterval(this._gameLoop.bind(this), 50);
             this._startButton.style.display = 'none';
-            this._controls.style.display = 'block';
-            this._obstacle.style.animationPlayState = 'running';
+        }
 
-            this._gameInterval = setInterval(() => {
-                const dinoBottom = parseInt(window.getComputedStyle(this._dino).getPropertyValue('bottom'));
-                const obstacleLeft = parseInt(window.getComputedStyle(this._obstacle).getPropertyValue('left'));
+        _gameLoop() {
+            const playerRect = this._player.getBoundingClientRect();
+            const obstacleRect = this._obstacle.getBoundingClientRect();
 
-                if (obstacleLeft > 0 && obstacleLeft < 40 && dinoBottom <= 60) {
-                    this._endGame();
-                }
+            // Detect collision
+            if (playerRect.x < obstacleRect.x + obstacleRect.width &&
+                playerRect.x + playerRect.width > obstacleRect.x &&
+                playerRect.y < obstacleRect.y + obstacleRect.height &&
+                playerRect.height + playerRect.y > obstacleRect.y) {
+                this._endGame();
+            }
 
-                if (this._isGameRunning) {
-                    this._score++;
-                    this._scoreElement.textContent = this._score;
-                }
-            }, 10);
+            // Increase score if obstacle successfully avoided
+            if (obstacleRect.right < 0) {
+                this._score++;
+                this._scoreDisplay.textContent = 'Score: ' + this._score;
+                this._gameContainer.removeChild(this._obstacle);
+                this._obstacle = document.createElement('div');
+                this._obstacle.classList.add('obstacle');
+                this._gameContainer.appendChild(this._obstacle);
+            }
         }
 
         _endGame() {
-            this._isGameRunning = false;
             clearInterval(this._gameInterval);
-            this._obstacle.style.animationPlayState = 'paused';
-            this._controls.style.display = 'none';
-            this._playAgainButton.style.display = 'block';
+            this._obstacle.remove();
             alert('Game Over!');
+            this._gameOverScreen.style.display = 'block';
+            this._replayButton.style.display = 'block';
         }
 
-        _resetGame() {
-            this._isGameRunning = false;
+        _replayGame() {
             this._score = 0;
-            this._scoreElement.textContent = this._score;
-            this._obstacle.style.animationPlayState = 'paused';
-            this._playAgainButton.style.display = 'none';
-            this._startButton.style.display = 'block';
+            this._scoreDisplay.textContent = 'Score: ' + this._score;
+            this._gameOverScreen.style.display = 'none';
+            this._replayButton.style.display = 'none';
+            this._startGame();
         }
     }
 
-    customElements.define('dino-game', DinoGame);
+    customElements.define('dino-runner-widget', DinoRunner);
 })();
+
