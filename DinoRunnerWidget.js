@@ -127,12 +127,12 @@
             this._startGame();
         }
 
-        _jump() {
-            this._player.style.bottom = '100px';
-            setTimeout(() => {
-                this._player.style.bottom = '0px';
-            }, 500);
-        }
+       _jump() {
+    this._player.style.bottom = '100px';
+    setTimeout(() => {
+        this._player.style.bottom = '0px';
+    }, 3000);
+}
 
         _pause() {
             this._isPaused = !this._isPaused;
