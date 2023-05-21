@@ -83,31 +83,32 @@
             this._pauseButton.style.display = 'block';
         }
 
-        _gameLoop() {
-            if (this._isPaused) return;
+      _gameLoop() {
+    if (this._isPaused) return;
 
-            const playerRect = this._player.getBoundingClientRect();
-            const obstacleRect = this._obstacle.getBoundingClientRect();
+    const playerRect = this._player.getBoundingClientRect();
+    const obstacleRect = this._obstacle.getBoundingClientRect();
 
-            // Detect collision
-            if (playerRect.x < obstacleRect.x + obstacleRect.width &&
-                playerRect.x + playerRect.width > obstacleRect.x &&
-                playerRect.y < obstacleRect.y + obstacleRect.height &&
-                playerRect.height + playerRect.y > obstacleRect.y &&
-                this._player.style.bottom === '0px') {
-                this._endGame();
-            }
+    // Detect collision
+    if (playerRect.x < obstacleRect.x + obstacleRect.width &&
+        playerRect.x + playerRect.width > obstacleRect.x &&
+        playerRect.bottom < obstacleRect.y + obstacleRect.height &&
+        playerRect.height + playerRect.y > obstacleRect.y &&
+        this._player.style.bottom === '0px') {
+        this._endGame();
+    }
 
-            // Increase score if obstacle successfully avoided
-            if (obstacleRect.right < 0) {
-                this._score++;
-                this._scoreDisplay.textContent = 'Score: ' + this._score;
-                this._gameContainer.removeChild(this._obstacle);
-                this._obstacle = document.createElement('div');
-                this._obstacle.classList.add('obstacle');
-                this._gameContainer.appendChild(this._obstacle);
-            }
-        }
+    // Increase score if obstacle successfully avoided
+    if (obstacleRect.right < 0) {
+        this._score++;
+        this._scoreDisplay.textContent = 'Score: ' + this._score;
+        this._gameContainer.removeChild(this._obstacle);
+        this._obstacle = document.createElement('div');
+        this._obstacle.classList.add('obstacle');
+        this._gameContainer.appendChild(this._obstacle);
+    }
+}
+
 
         _endGame() {
             clearInterval(this._gameInterval);
