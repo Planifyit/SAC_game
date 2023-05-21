@@ -2,7 +2,7 @@
     let tmpl = document.createElement('template');
     tmpl.innerHTML = `
         <style>
-      .game {
+   .game {
                 position: relative;
                 height: 200px;
                 width: 500px;
@@ -51,6 +51,12 @@
             <button id="start-button">Start</button>
             <div id="score">0</div>
             <button id="play-again" style="display:none;">Play Again</button>
+            <div id="controls" style="display:none;">
+                <button id="move-up">↑</button>
+                <button id="move-down">↓</button>
+                <button id="move-left">←</button>
+                <button id="move-right">→</button>
+            </div>
         </div>
     `;
 
@@ -65,6 +71,12 @@
             this._startButton = this._shadowRoot.querySelector('#start-button');
             this._playAgainButton = this._shadowRoot.querySelector('#play-again');
             this._scoreElement = this._shadowRoot.querySelector('#score');
+            this._controls = this._shadowRoot.querySelector('#controls');
+
+            this._moveUpButton = this._shadowRoot.querySelector('#move-up');
+            this._moveDownButton = this._shadowRoot.querySelector('#move-down');
+            this._moveLeftButton = this._shadowRoot.querySelector('#move-left');
+            this._moveRightButton = this._shadowRoot.querySelector('#move-right');
 
             this._isJumping = false;
             this._isGameRunning = false;
@@ -72,23 +84,29 @@
         }
 
         connectedCallback() {
-            this._dino.addEventListener('keydown', this._jump.bind(this));
+            this._moveUpButton.addEventListener('click', this._move.bind(this, 'up'));
+            this._moveDownButton.addEventListener('click', this._move.bind(this, 'down'));
+            this._moveLeftButton.addEventListener('click', this._move.bind(this, 'left'));
+            this._moveRightButton.addEventListener('click', this._move.bind(this, 'right'));
             this._startButton.addEventListener('click', this._startGame.bind(this));
             this._playAgainButton.addEventListener('click', this._resetGame.bind(this));
         }
 
-        _jump(event) {
+        _move(direction) {
             if (!this._isGameRunning) return;
 
-            if (event.code === 'Space') {
-                if (!this._isJumping) {
-                    this._isJumping = true;
-                    this._dino.style.bottom = '150px';
-                    setTimeout(() => {
-                        this._dino.style.bottom = '0px';
-                        this._isJumping = false;
-                    }, 500);
-                }
+            switch (direction) {
+                case 'up':
+                    if (!this._isJumping) {
+                        this._isJumping = true;
+                        this._dino.style.bottom = '150px';
+                        setTimeout(() => {
+                            this._dino.style.bottom = '0px';
+                            this._isJumping = false;
+                        }, 500);
+                    }
+                    break;
+                // add additional cases here for other directions if needed
             }
         }
 
@@ -96,23 +114,31 @@
             this._isGameRunning = true;
             this._scoreElement.textContent = this._score;
             this._startButton.style.display = 'none';
+            this._controls.style.display = 'block';
             this._obstacle.style.animationPlayState = 'running';
 
             this._gameInterval = setInterval(() => {
                 const dinoBottom = parseInt(window.getComputedStyle(this._dino).getPropertyValue('bottom'));
                 const obstacleLeft = parseInt(window.getComputedStyle(this._obstacle).getPropertyValue('left'));
 
-                if (obstacleLeft < 50 && obstacleLeft > 0 && dinoBottom <= 50) {
-                    this._isGameRunning = false;
-                    this._obstacle.style.animationPlayState = 'paused';
-                    clearInterval(this._gameInterval);
-                    this._playAgainButton.style.display = 'block';
-                    alert('Game Over!');
-                } else {
-                    this._score += 1;
+                if (obstacleLeft > 0 && obstacleLeft < 40 && dinoBottom <= 60) {
+                    this._endGame();
+                }
+
+                if (this._isGameRunning) {
+                    this._score++;
                     this._scoreElement.textContent = this._score;
                 }
             }, 10);
+        }
+
+        _endGame() {
+            this._isGameRunning = false;
+            clearInterval(this._gameInterval);
+            this._obstacle.style.animationPlayState = 'paused';
+            this._controls.style.display = 'none';
+            this._playAgainButton.style.display = 'block';
+            alert('Game Over!');
         }
 
         _resetGame() {
