@@ -20,7 +20,7 @@
 	"properties": {
 		"width": {
 			"type": "integer",
-			"default": 500
+			"default": 300
 		},
 		"height": {
 			"type": "integer",
@@ -28,16 +28,13 @@
 		}
 	},
 	"methods": {
-		"start": {
+		"startGame": {
 			"description": "Start the game"
-		},
-        "playAgain": {
-            "description": "Play the game again"
-        }
+		}
 	},
 	"events": {
 		"onGameOver": {
-			"description": "Called when the game is over."
+			"description": "Called when game over"
 		}
 	}
 }
