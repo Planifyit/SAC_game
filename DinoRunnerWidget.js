@@ -2,7 +2,48 @@
     let tmpl = document.createElement('template');
     tmpl.innerHTML = `
         <style>
-            /* same style code as before */
+      .game {
+                position: relative;
+                height: 200px;
+                width: 500px;
+                border: 1px solid black;
+            }
+
+            .dino {
+                position: absolute;
+                bottom: 0;
+                left: 50px;
+                width: 50px;
+                height: 50px;
+                background: green;
+            }
+
+            .obstacle {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 50px;
+                height: 50px;
+                background: red;
+                animation: obstacle 1s infinite linear;
+            }
+
+            @keyframes obstacle {
+                0% { right: 0; }
+                100% { right: 100%; }
+            }
+
+            #start-button, #play-again {
+                position: relative;
+                margin: 10px;
+            }
+
+            #score {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 10px;
+            }
         </style>
         <div class="game">
             <div class="dino"></div>
