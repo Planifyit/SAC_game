@@ -124,16 +124,16 @@ _gameLoop() {
     }
 
     // For the top obstacle...
-    if (this._topObstacleRight > this._gameContainer.offsetWidth) {
+    if (this._topObstacleRight > this._gameContainer.offsetWidth * 2) {
         if (this._gameContainer.contains(this._topObstacle)) {
             this._gameContainer.removeChild(this._topObstacle);
         }
         this._topObstacle = document.createElement('div');
         this._topObstacle.classList.add('top-obstacle');
         this._gameContainer.appendChild(this._topObstacle);
-        this._topObstacleRight = 0; // Reset to the start after it has passed the game container
+        this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset();
     } else {
-        this._topObstacleRight += 5;
+        this._topObstacleRight += 2.5;  // Blue obstacle moves at half the speed
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
     }
 
