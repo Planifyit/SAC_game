@@ -126,7 +126,7 @@ _startGame() {
     this._obstacleRight = 0;
     this._topObstacleRight = 0; // Initialize the top obstacle at the right edge of the screen
     this._topObstacleRight = this._obstacleRight + this._distanceBetweenObstacles; // Initialize the top obstacle at the right edge of the screen plus the distance between obstacles
-    this._distanceBetweenObstacles = 200;
+    this._distanceBetweenObstacles = 150;
 }
 
 _gameLoop() {
