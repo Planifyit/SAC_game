@@ -74,7 +74,7 @@
 
         randomOffset() {
         // Returns a random number between 50 and 150
-        return Math.floor(Math.random() * 100) + 50;
+        return Math.floor(Math.random() * 200) + 50;
     }
         connectedCallback() {
             this._startButton.addEventListener('click', this._startGame.bind(this));
