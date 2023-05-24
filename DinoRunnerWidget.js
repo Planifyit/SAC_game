@@ -72,6 +72,10 @@
             this._obstacleRight = 0;
         }
 
+        randomOffset() {
+        // Returns a random number between 50 and 150
+        return Math.floor(Math.random() * 100) + 50;
+    }
         connectedCallback() {
             this._startButton.addEventListener('click', this._startGame.bind(this));
             this._replayButton.addEventListener('click', this._replayGame.bind(this));
@@ -80,67 +84,70 @@
             this._pauseButton.addEventListener('click', this._pause.bind(this));
         }
 
-        _startGame() {
-            this._player = this._shadowRoot.querySelector('.player');
-            this._obstacle = document.createElement('div');
-            this._obstacle.classList.add('obstacle');
-            this._topObstacle = document.createElement('div');
-            this._topObstacle.classList.add('top-obstacle');
-            this._gameContainer.appendChild(this._obstacle);
-            this._gameContainer.appendChild(this._topObstacle);
-            this._gameInterval = setInterval(this._gameLoop.bind(this), 50);
-            this._startButton.style.display = 'none';
-            this._jumpButton.style.display = 'block';
-            this._dunkButton.style.display = 'block';
-            this._pauseButton.style.display = 'block';
-            this._obstacleRight = 0;
-        }
+       
+_startGame() {
+    this._player = this._shadowRoot.querySelector('.player');
+    this._obstacle = document.createElement('div');
+    this._obstacle.classList.add('obstacle');
+    this._gameContainer.appendChild(this._obstacle);
+    this._topObstacle = document.createElement('div');
+    this._topObstacle.classList.add('top-obstacle');
+    this._gameContainer.appendChild(this._topObstacle);
+    this._gameInterval = setInterval(this._gameLoop.bind(this), 50);
+    this._startButton.style.display = 'none';
+    this._jumpButton.style.display = 'block';
+    this._dunkButton.style.display = 'block';
+    this._pauseButton.style.display = 'block';
+    this._obstacleRight = 0;
+    this._topObstacleRight = this._obstacleRight + randomOffset(); // random offset for the top obstacle
+}
 
-        _gameLoop() {
-            if (this._isPaused) return;
+_gameLoop() {
+    if (this._isPaused) return;
 
-            const playerRect = this._player.getBoundingClientRect();
-            const obstacleRect = this._obstacle.getBoundingClientRect();
-            const topObstacleRect = this._topObstacle.getBoundingClientRect();
+    const playerRect = this._player.getBoundingClientRect();
+    const obstacleRect = this._obstacle.getBoundingClientRect();
+    const topObstacleRect = this._topObstacle.getBoundingClientRect();
 
-            // Detect collision with ground obstacle
-            if (!this._isJumping &&
-                playerRect.x < obstacleRect.x + obstacleRect.width &&
-                playerRect.x + playerRect.width > obstacleRect.x &&
-                playerRect.y < obstacleRect.y + obstacleRect.height &&
-                playerRect.height + playerRect.y > obstacleRect.y) {
-                this._endGame();
-            }
+    // Detect collision
+    if ((playerRect.x < obstacleRect.x + obstacleRect.width &&
+        playerRect.x + playerRect.width > obstacleRect.x &&
+        playerRect.y < obstacleRect.y + obstacleRect.height &&
+        playerRect.height + playerRect.y > obstacleRect.y) || 
+        (playerRect.x < topObstacleRect.x + topObstacleRect.width &&
+        playerRect.x + playerRect.width > topObstacleRect.x &&
+        playerRect.y < topObstacleRect.y + topObstacleRect.height &&
+        playerRect.height + playerRect.y > topObstacleRect.y)) {
+        this._endGame();
+    }
 
-            // Detect collision with top obstacle
-            if (this._isJumping &&
-                playerRect.x < topObstacleRect.x + topObstacleRect.width &&
-                playerRect.x + playerRect.width > topObstacleRect.x &&
-                playerRect.y < topObstacleRect.y + topObstacleRect.height &&
-                playerRect.height + playerRect.y > topObstacleRect.y) {
-                this._endGame();
-            }
+    // Increase score if obstacle successfully avoided
+    if (this._obstacleRight > this._gameContainer.offsetWidth) {
+        this._score++;
+        this._scoreDisplay.textContent = 'Score: ' + this._score;
+        this._gameContainer.removeChild(this._obstacle);
+        this._obstacle = document.createElement('div');
+        this._obstacle.classList.add('obstacle');
+        this._gameContainer.appendChild(this._obstacle);
+        this._obstacleRight = 0; // reset the obstacle position
+    } else {
+        // increase the obstacle position for the next loop iteration
+        this._obstacleRight += 5;
+        this._obstacle.style.right = `${this._obstacleRight}px`;
+    }
 
-            // Increase score if obstacles successfully avoided
-            if (this._obstacleRight > this._gameContainer.offsetWidth) {
-                this._score++;
-                this._scoreDisplay.textContent = 'Score: ' + this._score;
-                this._gameContainer.removeChild(this._obstacle);
-                this._gameContainer.removeChild(this._topObstacle);
-                this._obstacle = document.createElement('div');
-                this._obstacle.classList.add('obstacle');
-                this._topObstacle = document.createElement('div');
-                this._topObstacle.classList.add('top-obstacle');
-                this._gameContainer.appendChild(this._obstacle);
-                this._gameContainer.appendChild(this._topObstacle);
-                this._obstacleRight = 0; // reset the obstacle position
-            } else {
-                // increase the obstacle position for the next loop iteration
-                this._obstacleRight += 5;
-                this._obstacle.style.right = `${this._obstacleRight}px`;
-                this._topObstacle.style.right = `${this._obstacleRight}px`;
-            }
-        }
+    if (this._topObstacleRight > this._gameContainer.offsetWidth) {
+        this._gameContainer.removeChild(this._topObstacle);
+        this._topObstacle = document.createElement('div');
+        this._topObstacle.classList.add('top-obstacle');
+        this._gameContainer.appendChild(this._topObstacle);
+        this._topObstacleRight = randomOffset(); // new random offset for the top obstacle
+    } else {
+        // increase the top obstacle position for the next loop iteration
+        this._topObstacleRight += 5;
+        this._topObstacle.style.right = `${this._topObstacleRight}px`;
+    }
+}
 
         _endGame() {
             clearInterval(this._gameInterval);
