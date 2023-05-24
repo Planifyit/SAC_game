@@ -130,7 +130,7 @@ _startGame() {
 _gameLoop() {
     if(this._isPaused) return;
 
-     // For the bottom obstacle...
+    // For the bottom obstacle...
     if (this._obstacleRight > this._gameContainer.offsetWidth) {
         this._score++;
         this._scoreDisplay.textContent = 'Score: ' + this._score;
@@ -159,7 +159,23 @@ _gameLoop() {
         this._topObstacleRight += 5;
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
     }
+
+    // Collision detection
+    const playerRect = this._player.getBoundingClientRect();
+    const obstacleRect = this._obstacle.getBoundingClientRect();
+    const topObstacleRect = this._topObstacle.getBoundingClientRect();
+
+    if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
+        playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
+        this._endGame();
+    }
+
+    if (playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
+        playerRect.bottom > topObstacleRect.top && playerRect.top < topObstacleRect.bottom) {
+        this._endGame();
+    }
 }
+
 
 
      _endGame() {
