@@ -123,6 +123,8 @@ _startGame() {
     this._pauseButton.style.display = 'block';
     this._obstacleRight = 0;
     this._topObstacleRight = 0; // Initialize the top obstacle at the right edge of the screen
+    this._topObstacleRight = this._obstacleRight + this._distanceBetweenObstacles; // Initialize the top obstacle at the right edge of the screen plus the distance between obstacles
+
 }
 
 _gameLoop() {
@@ -145,14 +147,14 @@ _gameLoop() {
     }
 
     // For the top obstacle...
-    if (this._topObstacleRight > this._gameContainer.offsetWidth * 2) {
+   if (this._topObstacleRight > this._gameContainer.offsetWidth + this._distanceBetweenObstacles) {
         if (this._gameContainer.contains(this._topObstacle)) {
             this._gameContainer.removeChild(this._topObstacle);
         }
         this._topObstacle = document.createElement('div');
         this._topObstacle.classList.add('top-obstacle');
         this._gameContainer.appendChild(this._topObstacle);
-        this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset();
+        this._topObstacleRight = this._obstacleRight + this._distanceBetweenObstacles + this.randomOffset();
     } else {
         this._topObstacleRight += 2.5;  // Blue obstacle moves at half the speed
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
