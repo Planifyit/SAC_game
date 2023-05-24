@@ -126,7 +126,7 @@ _startGame() {
     this._dunkButton.style.display = 'block';
     this._pauseButton.style.display = 'block';
     this._obstacleRight = 0;
-    this._topObstacleRight = this._distanceBetweenObstacles; 
+    this._topObstacleRight = 0; 
 
 }
 
@@ -149,32 +149,31 @@ _gameLoop() {
         this._obstacle.style.right = `${this._obstacleRight}px`;
     }
 
-// For the top obstacle...
-    if (this._topObstacleRight > this._gameContainer.offsetWidth) {
-        if (this._gameContainer.contains(this._topObstacle)) {
-            this._gameContainer.removeChild(this._topObstacle);
-        }
-        this._topObstacle = document.createElement('div');
-        this._topObstacle.classList.add('top-obstacle');
-        this._gameContainer.appendChild(this._topObstacle);
-        this._topObstacleRight = 0;
-    } else {
-        this._topObstacleRight += 5;
-        this._topObstacle.style.right = `${this._topObstacleRight}px`;
-    }
-
-    // Collision detection
+    // For the top obstacle...
     const playerRect = this._player.getBoundingClientRect();
     const obstacleRect = this._obstacle.getBoundingClientRect();
-    const topObstacleRect = this._topObstacle.getBoundingClientRect();
-
-    if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
-        playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
-        this._endGame();
+    if (obstacleRect.right < playerRect.left) {
+        // Only start moving the top obstacle once the bottom obstacle has passed the player
+        if (this._topObstacleRight > this._gameContainer.offsetWidth) {
+            if (this._gameContainer.contains(this._topObstacle)) {
+                this._gameContainer.removeChild(this._topObstacle);
+            }
+            this._topObstacle = document.createElement('div');
+            this._topObstacle.classList.add('top-obstacle');
+            this._gameContainer.appendChild(this._topObstacle);
+            this._topObstacleRight = 0;
+        } else {
+            this._topObstacleRight += 5;
+            this._topObstacle.style.right = `${this._topObstacleRight}px`;
+        }
     }
 
-    if (playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
-        playerRect.bottom > topObstacleRect.top && playerRect.top < topObstacleRect.bottom) {
+    // Collision detection for both obstacles
+    const topObstacleRect = this._topObstacle.getBoundingClientRect();
+    if ((playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
+        playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) || 
+        (playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
+        playerRect.bottom > topObstacleRect.top && playerRect.top < topObstacleRect.bottom)) {
         this._endGame();
     }
 }
