@@ -147,7 +147,7 @@ _gameLoop() {
         this._obstacle.style.right = `${this._obstacleRight}px`;
     }
 
-    // For the top obstacle...
+// For the top obstacle...
     if (this._topObstacleRight > this._gameContainer.offsetWidth) {
         if (this._gameContainer.contains(this._topObstacle)) {
             this._gameContainer.removeChild(this._topObstacle);
@@ -156,7 +156,7 @@ _gameLoop() {
         this._topObstacle.classList.add('top-obstacle');
         this._gameContainer.appendChild(this._topObstacle);
         this._topObstacleRight = 0;
-    } else if (this._obstacleRight >= this._distanceBetweenObstacles) {
+    } else {
         this._topObstacleRight += 5;
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
     }
