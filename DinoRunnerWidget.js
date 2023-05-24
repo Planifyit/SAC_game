@@ -99,7 +99,7 @@ _startGame() {
     this._dunkButton.style.display = 'block';
     this._pauseButton.style.display = 'block';
     this._obstacleRight = 0;
-    this._topObstacleRight = this._obstacleRight + randomOffset(); // random offset for the top obstacle
+    this._topObstacleRight = this._obstacleRight + this.randomOffset(); // random offset for the top obstacle
 }
 
 _gameLoop() {
@@ -141,13 +141,14 @@ _gameLoop() {
         this._topObstacle = document.createElement('div');
         this._topObstacle.classList.add('top-obstacle');
         this._gameContainer.appendChild(this._topObstacle);
-        this._topObstacleRight = randomOffset(); // new random offset for the top obstacle
+        this._topObstacleRight = this.randomOffset(); // new random offset for the top obstacle
     } else {
         // increase the top obstacle position for the next loop iteration
         this._topObstacleRight += 5;
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
     }
 }
+
 
         _endGame() {
             clearInterval(this._gameInterval);
