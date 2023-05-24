@@ -141,23 +141,19 @@ _gameLoop() {
         this._obstacle.style.right = `${this._obstacleRight}px`;
     }
 
-    // Before moving the obstacles, add the offset to the top obstacle's right property
-    this._topObstacleRight += this._topObstacleOffset;
-
     if (this._topObstacleRight > this._gameContainer.offsetWidth) {
         this._gameContainer.removeChild(this._topObstacle);
         this._topObstacle = document.createElement('div');
         this._topObstacle.classList.add('top-obstacle');
         this._gameContainer.appendChild(this._topObstacle);
-        // Generate a new random offset for the next top obstacle
-        this._topObstacleOffset = this.randomOffset();
-        this._topObstacleRight = 0; // reset the top obstacle position
+        this._topObstacleRight = this._topObstacleOffset; // new random offset for the top obstacle
     } else {
         // increase the top obstacle position for the next loop iteration
         this._topObstacleRight += 5;
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
     }
 }
+
 
         _endGame() {
             clearInterval(this._gameInterval);
