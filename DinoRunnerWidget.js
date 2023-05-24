@@ -104,35 +104,61 @@ _startGame() {
     this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset(); // Initialize top obstacle offscreen to the right
 }
 
-     _gameLoop() {
-            if (this._obstacleRight > this._gameContainer.offsetWidth) {
-                this._score++;
-                this._scoreDisplay.textContent = 'Score: ' + this._score;
-                if (this._gameContainer.contains(this._obstacle)) {
-                    this._gameContainer.removeChild(this._obstacle);
-                }
-                this._obstacle = document.createElement('div');
-                this._obstacle.classList.add('obstacle');
-                this._gameContainer.appendChild(this._obstacle);
-                this._obstacleRight = 0;
-            } else {
-                this._obstacleRight += 5;
-                this._obstacle.style.right = `${this._obstacleRight}px`;
-            }
-        
-            if (this._topObstacleRight > this._gameContainer.offsetWidth + this.randomOffset()) {
-                if (this._gameContainer.contains(this._topObstacle)) {
-                    this._gameContainer.removeChild(this._topObstacle);
-                }
-                this._topObstacle = document.createElement('div');
-                this._topObstacle.classList.add('top-obstacle');
-                this._gameContainer.appendChild(this._topObstacle);
-                this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset();
-            } else {
-                this._topObstacleRight += 5;
-                this._topObstacle.style.right = `${this._topObstacleRight}px`;
-            }
+   _gameLoop() {
+    if(this._isPaused) return;
+
+    // For the bottom obstacle...
+    if (this._obstacleRight > this._gameContainer.offsetWidth) {
+        this._score++;
+        this._scoreDisplay.textContent = 'Score: ' + this._score;
+        if (this._gameContainer.contains(this._obstacle)) {
+            this._gameContainer.removeChild(this._obstacle);
         }
+        this._obstacle = document.createElement('div');
+        this._obstacle.classList.add('obstacle');
+        this._gameContainer.appendChild(this._obstacle);
+        this._obstacleRight = 0;
+    } else {
+        this._obstacleRight += 5;
+        this._obstacle.style.right = `${this._obstacleRight}px`;
+    }
+
+    // For the top obstacle...
+    if (this._topObstacleRight > this._gameContainer.offsetWidth * 2) {
+        if (this._gameContainer.contains(this._topObstacle)) {
+            this._gameContainer.removeChild(this._topObstacle);
+        }
+        this._topObstacle = document.createElement('div');
+        this._topObstacle.classList.add('top-obstacle');
+        this._gameContainer.appendChild(this._topObstacle);
+        this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset();
+    } else {
+        this._topObstacleRight += 5;
+        this._topObstacle.style.right = `${this._topObstacleRight}px`;
+    }
+
+    // Add collision detection
+    let playerRect = this._player.getBoundingClientRect();
+    let obstacleRect = this._obstacle.getBoundingClientRect();
+    let topObstacleRect = this._topObstacle.getBoundingClientRect();
+
+    // Check if player and obstacle overlap
+    if (playerRect.left < obstacleRect.right &&
+        playerRect.right > obstacleRect.left &&
+        playerRect.top < obstacleRect.bottom &&
+        playerRect.bottom > obstacleRect.top) {
+        this._endGame();
+    }
+
+    // Check if player and topObstacle overlap
+    if (playerRect.left < topObstacleRect.right &&
+        playerRect.right > topObstacleRect.left &&
+        playerRect.top < topObstacleRect.bottom &&
+        playerRect.bottom > topObstacleRect.top) {
+        this._endGame();
+    }
+}
+
 
      _endGame() {
     clearInterval(this._gameInterval);
