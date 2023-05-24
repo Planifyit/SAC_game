@@ -85,13 +85,14 @@
             this._pauseButton.style.display = 'block';
         }
 _gameLoop() {
-    if (this._isPaused || this._isJumping) return;
+    if (this._isPaused) return;
 
     const playerRect = this._player.getBoundingClientRect();
     const obstacleRect = this._obstacle.getBoundingClientRect();
 
     // Detect collision
-    if (playerRect.x < obstacleRect.x + obstacleRect.width &&
+    if (!this._isJumping &&
+        playerRect.x < obstacleRect.x + obstacleRect.width &&
         playerRect.x + playerRect.width > obstacleRect.x &&
         playerRect.y < obstacleRect.y + obstacleRect.height &&
         playerRect.height + playerRect.y > obstacleRect.y) {
