@@ -43,7 +43,7 @@
             }
             
    .start-button, .replay-button, .jump-button, .dunk-button, .pause-button {
-    margin: 20px;
+    margin: 15px;
     padding: 10px 20px;
     font-size: 1.5em;
 }
@@ -124,7 +124,6 @@ _startGame() {
     this._dunkButton.style.display = 'block';
     this._pauseButton.style.display = 'block';
     this._obstacleRight = 0;
-    this._topObstacleRight = 0; // Initialize the top obstacle at the right edge of the screen
     this._topObstacleRight = this._obstacleRight + this._distanceBetweenObstacles; // Initialize the top obstacle at the right edge of the screen plus the distance between obstacles
     this._distanceBetweenObstacles = 150;
 }
