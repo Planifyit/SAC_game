@@ -80,6 +80,7 @@
     class DinoRunner extends HTMLElement {
         constructor() {
             super();
+            this._blueStarted = false;
             this._shadowRoot = this.attachShadow({mode: 'open'});
             this._shadowRoot.appendChild(tmpl.content.cloneNode(true));
 
@@ -129,7 +130,6 @@ _startGame() {
     this._topObstacleRight = 0; 
 
 }
-
 _gameLoop() {
     if(this._isPaused) return;
 
@@ -144,16 +144,18 @@ _gameLoop() {
         this._obstacle.classList.add('obstacle');
         this._gameContainer.appendChild(this._obstacle);
         this._obstacleRight = 0;
+
+        // Start blue obstacle if it hasn't started yet
+        if (!this._blueStarted) {
+            this._blueStarted = true;
+        }
     } else {
         this._obstacleRight += 5;
         this._obstacle.style.right = `${this._obstacleRight}px`;
     }
 
     // For the top obstacle...
-    const playerRect = this._player.getBoundingClientRect();
-    const obstacleRect = this._obstacle.getBoundingClientRect();
-    if (obstacleRect.right < playerRect.left) {
-        // Only start moving the top obstacle once the bottom obstacle has passed the player
+    if (this._blueStarted) {
         if (this._topObstacleRight > this._gameContainer.offsetWidth) {
             if (this._gameContainer.contains(this._topObstacle)) {
                 this._gameContainer.removeChild(this._topObstacle);
@@ -168,15 +170,22 @@ _gameLoop() {
         }
     }
 
-    // Collision detection for both obstacles
+    // Collision detection
+    const playerRect = this._player.getBoundingClientRect();
+    const obstacleRect = this._obstacle.getBoundingClientRect();
     const topObstacleRect = this._topObstacle.getBoundingClientRect();
-    if ((playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
-        playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) || 
-        (playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
-        playerRect.bottom > topObstacleRect.top && playerRect.top < topObstacleRect.bottom)) {
+
+    if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
+        playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
+        this._endGame();
+    }
+
+    if (playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
+        playerRect.bottom > topObstacleRect.top && playerRect.top < topObstacleRect.bottom) {
         this._endGame();
     }
 }
+
 
 
 
