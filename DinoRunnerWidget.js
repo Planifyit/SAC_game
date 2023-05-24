@@ -29,7 +29,7 @@
                 right: 0;
                 top: 0;
                 height: 50px;
-                width: 50px;
+                width: 100px;
                 background: blue;
             }
             .score {
