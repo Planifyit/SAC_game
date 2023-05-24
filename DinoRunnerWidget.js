@@ -21,15 +21,15 @@
             }
             .obstacle {
                 right: 0;
-                height: 50px;
-                width: 50px;
+                height: 100px;
+                width: 20px;
                 background: red;
             }
             .top-obstacle {
                 right: 0;
                 top: 0;
-                height: 50px;
-                width: 100px;
+                height: 100px;
+                width: 20px;
                 background: blue;
             }
             .score {
