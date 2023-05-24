@@ -70,6 +70,8 @@
             this._isPaused = false;
             this._isJumping = false;
             this._obstacleRight = 0;
+            this._topObstacleRight = 0;
+              this._topObstacleOffset = this.randomOffset();
         }
 
         randomOffset() {
@@ -98,8 +100,11 @@ _startGame() {
     this._jumpButton.style.display = 'block';
     this._dunkButton.style.display = 'block';
     this._pauseButton.style.display = 'block';
+    // Set initial positions to 0
     this._obstacleRight = 0;
-    this._topObstacleRight = this._obstacleRight + this.randomOffset(); // random offset for the top obstacle
+    this._topObstacleRight = 0;
+    // Store the random offset
+    this._topObstacleOffset = this.randomOffset();
 }
 
 _gameLoop() {
@@ -136,19 +141,23 @@ _gameLoop() {
         this._obstacle.style.right = `${this._obstacleRight}px`;
     }
 
+    // Before moving the obstacles, add the offset to the top obstacle's right property
+    this._topObstacleRight += this._topObstacleOffset;
+
     if (this._topObstacleRight > this._gameContainer.offsetWidth) {
         this._gameContainer.removeChild(this._topObstacle);
         this._topObstacle = document.createElement('div');
         this._topObstacle.classList.add('top-obstacle');
         this._gameContainer.appendChild(this._topObstacle);
-        this._topObstacleRight = this.randomOffset(); // new random offset for the top obstacle
+        // Generate a new random offset for the next top obstacle
+        this._topObstacleOffset = this.randomOffset();
+        this._topObstacleRight = 0; // reset the top obstacle position
     } else {
         // increase the top obstacle position for the next loop iteration
         this._topObstacleRight += 5;
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
     }
 }
-
 
         _endGame() {
             clearInterval(this._gameInterval);
