@@ -144,14 +144,17 @@ _gameLoop() {
         this._obstacle.classList.add('obstacle');
         this._gameContainer.appendChild(this._obstacle);
         this._obstacleRight = 0;
-
-        // Start blue obstacle if it hasn't started yet
-        if (!this._blueStarted) {
-            this._blueStarted = true;
-        }
     } else {
         this._obstacleRight += 5;
         this._obstacle.style.right = `${this._obstacleRight}px`;
+
+        // Check if red obstacle has reached the same position as the dino
+        if (this._obstacleRight >= this._gameContainer.offsetWidth - this._player.offsetWidth) {
+            // Start blue obstacle if it hasn't started yet
+            if (!this._blueStarted) {
+                this._blueStarted = true;
+            }
+        }
     }
 
     // For the top obstacle...
@@ -169,6 +172,23 @@ _gameLoop() {
             this._topObstacle.style.right = `${this._topObstacleRight}px`;
         }
     }
+
+    // Collision detection
+    const playerRect = this._player.getBoundingClientRect();
+    const obstacleRect = this._obstacle.getBoundingClientRect();
+    const topObstacleRect = this._topObstacle.getBoundingClientRect();
+
+    if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
+        playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
+        this._endGame();
+    }
+
+    if (playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
+        playerRect.bottom > topObstacleRect.top && playerRect.top < topObstacleRect.bottom) {
+        this._endGame();
+    }
+}
+
 
     // Collision detection
     const playerRect = this._player.getBoundingClientRect();
