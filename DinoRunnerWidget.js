@@ -46,7 +46,7 @@
             
    .start-button, .replay-button, .jump-button, .dunk-button, .pause-button {
     margin: 10px;
-    padding: 10px 20px;
+    padding: 5px 10px;
     font-size: 1.5em;
 }
 
