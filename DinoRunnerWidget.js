@@ -41,6 +41,7 @@
         <button class="start-button">Start Game</button>
         <button class="replay-button" style="display: none;">Play Again</button>
         <button class="jump-button" style="display: none;">Jump</button>
+        <button class="dunk-button" style="display: none;">Dunk</button>
         <button class="pause-button" style="display: none;">Pause</button>
     `;
 
@@ -54,6 +55,7 @@
             this._startButton = this._shadowRoot.querySelector('.start-button');
             this._replayButton = this._shadowRoot.querySelector('.replay-button');
             this._jumpButton = this._shadowRoot.querySelector('.jump-button');
+            this._dunkButton = this._shadowRoot.querySelector('.dunk-button');
             this._pauseButton = this._shadowRoot.querySelector('.pause-button');
             this._scoreDisplay = this._shadowRoot.querySelector('.score');
 
@@ -67,6 +69,7 @@
             this._startButton.addEventListener('click', this._startGame.bind(this));
             this._replayButton.addEventListener('click', this._replayGame.bind(this));
             this._jumpButton.addEventListener('click', this._jump.bind(this));
+            this._dunkButton.addEventListener('click', this._dunk.bind(this));
             this._pauseButton.addEventListener('click', this._pause.bind(this));
         }
 
@@ -78,9 +81,11 @@
             this._gameInterval = setInterval(this._gameLoop.bind(this), 50);
             this._startButton.style.display = 'none';
             this._jumpButton.style.display = 'block';
+            this._dunkButton.style.display = 'block';
             this._pauseButton.style.display = 'block';
             this._obstacleRight = 0;
         }
+
 
         _gameLoop() {
             if (this._isPaused) return;
