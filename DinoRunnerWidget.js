@@ -2,6 +2,7 @@
     let tmpl = document.createElement('template');
     tmpl.innerHTML = `
         <style>
+        
             .game-container {
                 position: relative;
                 height: 200px;
