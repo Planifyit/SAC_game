@@ -15,8 +15,8 @@
             }
             .player {
                 left: 10px;
-                height: 50px;
-                width: 50px;
+                height: 20px;
+                width: 20px;
                 background: green;
             }
             .obstacle {
@@ -187,7 +187,7 @@ _gameLoop() {
 
         _jump() {
             this._isJumping = true;
-            this._player.style.bottom = '100px';
+            this._player.style.bottom = '70px';
         }
 
         _dunk() {
