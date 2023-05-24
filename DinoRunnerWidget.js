@@ -160,7 +160,6 @@ _gameLoop() {
 }
 
 
-
      _endGame() {
     clearInterval(this._gameInterval);
     if (this._gameContainer.contains(this._obstacle)) {
