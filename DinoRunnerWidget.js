@@ -136,15 +136,15 @@
             this._startGame();
         }
 
-        _jump() {
+       _jump() {
             this._isJumping = true;
             this._player.style.bottom = '100px';
-            setTimeout(() => {
-                this._player.style.bottom = '0px';
-                this._isJumping = false;
-            }, 3000);
         }
 
+        _dunk() {
+            this._player.style.bottom = '0px';
+            this._isJumping = false;
+        }
         _pause() {
             this._isPaused = !this._isPaused;
             if(this._isPaused) {
