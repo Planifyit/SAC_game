@@ -190,22 +190,6 @@ _gameLoop() {
 }
 
 
-    // Collision detection
-    const playerRect = this._player.getBoundingClientRect();
-    const obstacleRect = this._obstacle.getBoundingClientRect();
-    const topObstacleRect = this._topObstacle.getBoundingClientRect();
-
-    if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
-        playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
-        this._endGame();
-    }
-
-    if (playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
-        playerRect.bottom > topObstacleRect.top && playerRect.top < topObstacleRect.bottom) {
-        this._endGame();
-    }
-}
-
 
 
 
