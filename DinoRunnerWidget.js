@@ -124,8 +124,8 @@ _startGame() {
     this._dunkButton.style.display = 'block';
     this._pauseButton.style.display = 'block';
     this._obstacleRight = 0;
-    this._topObstacleRight = this._obstacleRight + this._distanceBetweenObstacles; // Initialize the top obstacle at the right edge of the screen plus the distance between obstacles
-    this._distanceBetweenObstacles = 150;
+    this._topObstacleRight = this._distanceBetweenObstacles; 
+
 }
 
 _gameLoop() {
