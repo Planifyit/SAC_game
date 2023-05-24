@@ -101,10 +101,10 @@ _startGame() {
     this._dunkButton.style.display = 'block';
     this._pauseButton.style.display = 'block';
     this._obstacleRight = 0;
-    this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset(); // Initialize top obstacle offscreen to the right
+    this._topObstacleRight = 0; // Initialize the top obstacle at the right edge of the screen
 }
 
-   _gameLoop() {
+_gameLoop() {
     if(this._isPaused) return;
 
     // For the bottom obstacle...
@@ -124,14 +124,14 @@ _startGame() {
     }
 
     // For the top obstacle...
-    if (this._topObstacleRight > this._gameContainer.offsetWidth * 2) {
+    if (this._topObstacleRight > this._gameContainer.offsetWidth) {
         if (this._gameContainer.contains(this._topObstacle)) {
             this._gameContainer.removeChild(this._topObstacle);
         }
         this._topObstacle = document.createElement('div');
         this._topObstacle.classList.add('top-obstacle');
         this._gameContainer.appendChild(this._topObstacle);
-        this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset();
+        this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset(); // Initialize top obstacle offscreen to the right
     } else {
         this._topObstacleRight += 5;
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
@@ -158,6 +158,7 @@ _startGame() {
         this._endGame();
     }
 }
+
 
 
      _endGame() {
