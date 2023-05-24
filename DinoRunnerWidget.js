@@ -98,7 +98,7 @@
             }
 
             // Increase score if obstacle successfully avoided
-            if (this._obstacleRight > this._gameContainer.offsetWidth) {
+            if (this._obstacleRight + this._obstacle.offsetWidth > this._gameContainer.offsetWidth) {
                 this._score++;
                 this._scoreDisplay.textContent = 'Score: ' + this._score;
                 this._gameContainer.removeChild(this._obstacle);
