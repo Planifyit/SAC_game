@@ -24,16 +24,11 @@
                 height: 50px;
                 width: 50px;
                 background: red;
-                animation: moveObstacle 2s linear infinite;
             }
             .score {
                 position: absolute;
                 right: 10px;
                 top: 10px;
-            }
-            @keyframes moveObstacle {
-                0% { right: 0; }
-                100% { right: 100%; }
             }
             .paused {
                 animation-play-state: paused;
@@ -65,6 +60,7 @@
             this._score = 0;
             this._isPaused = false;
             this._isJumping = false;
+            this._obstacleRight = 0;
         }
 
         connectedCallback() {
@@ -83,34 +79,39 @@
             this._startButton.style.display = 'none';
             this._jumpButton.style.display = 'block';
             this._pauseButton.style.display = 'block';
+            this._obstacleRight = 0;
         }
-_gameLoop() {
-    if (this._isPaused) return;
 
-    const playerRect = this._player.getBoundingClientRect();
-    const obstacleRect = this._obstacle.getBoundingClientRect();
+        _gameLoop() {
+            if (this._isPaused) return;
 
-    // Detect collision
-    if (!this._isJumping &&
-        playerRect.x < obstacleRect.x + obstacleRect.width &&
-        playerRect.x + playerRect.width > obstacleRect.x &&
-        playerRect.y < obstacleRect.y + obstacleRect.height &&
-        playerRect.height + playerRect.y > obstacleRect.y) {
-        this._endGame();
-    }
+            const playerRect = this._player.getBoundingClientRect();
+            const obstacleRect = this._obstacle.getBoundingClientRect();
 
-    // Increase score if obstacle successfully avoided
-    if (this._obstacle.offsetLeft + this._obstacle.offsetWidth < 0) {
-        this._score++;
-        this._scoreDisplay.textContent = 'Score: ' + this._score;
-        this._gameContainer.removeChild(this._obstacle);
-        this._obstacle = document.createElement('div');
-        this._obstacle.classList.add('obstacle');
-        this._gameContainer.appendChild(this._obstacle);
-    }
-}
+            // Detect collision
+            if (!this._isJumping &&
+                playerRect.x < obstacleRect.x + obstacleRect.width &&
+                playerRect.x + playerRect.width > obstacleRect.x &&
+                playerRect.y < obstacleRect.y + obstacleRect.height &&
+                playerRect.height + playerRect.y > obstacleRect.y) {
+                this._endGame();
+            }
 
-
+            // Increase score if obstacle successfully avoided
+            if (this._obstacleRight > this._gameContainer.offsetWidth) {
+                this._score++;
+                this._scoreDisplay.textContent = 'Score: ' + this._score;
+                this._gameContainer.removeChild(this._obstacle);
+                this._obstacle = document.createElement('div');
+                this._obstacle.classList.add('obstacle');
+                this._gameContainer.appendChild(this._obstacle);
+                this._obstacleRight = 0; // reset the obstacle position
+            } else {
+                // increase the obstacle position for the next loop iteration
+                this._obstacleRight += 5;
+                this._obstacle.style.right = `${this._obstacleRight}px`;
+            }
+        }
 
         _endGame() {
             clearInterval(this._gameInterval);
@@ -130,22 +131,21 @@ _gameLoop() {
             this._startGame();
         }
 
-_jump() {
-    this._isJumping = true;
-    this._player.style.bottom = '100px';
-    setTimeout(() => {
-        this._player.style.bottom = '0px';
-        this._isJumping = false;
-    }, 3000);
-}
+        _jump() {
+            this._isJumping = true;
+            this._player.style.bottom = '100px';
+            setTimeout(() => {
+                this._player.style.bottom = '0px';
+                this._isJumping = false;
+            }, 3000);
+        }
+
         _pause() {
             this._isPaused = !this._isPaused;
             if(this._isPaused) {
                 this._pauseButton.textContent = 'Resume';
-                this._obstacle.classList.add('paused');
             } else {
                 this._pauseButton.textContent = 'Pause';
-                this._obstacle.classList.remove('paused');
             }
         }
     }
