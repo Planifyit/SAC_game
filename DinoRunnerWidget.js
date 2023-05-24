@@ -42,9 +42,11 @@
                 animation-play-state: paused;
             }
             
-             .start-button, .replay-button, .jump-button, .dunk-button, .pause-button {
-        margin: 10px;
-      }
+   .start-button, .replay-button, .jump-button, .dunk-button, .pause-button {
+    margin: 20px;
+    padding: 10px 20px;
+    font-size: 1.5em;
+}
 
       .start-button, .replay-button {
         background: orange;
