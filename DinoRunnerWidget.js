@@ -104,62 +104,48 @@ _startGame() {
     this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset(); // Initialize top obstacle offscreen to the right
 }
 
-_gameLoop() {
-    if (this._isPaused) return;
-
-    const playerRect = this._player.getBoundingClientRect();
-    const obstacleRect = this._obstacle.getBoundingClientRect();
-    const topObstacleRect = this._topObstacle.getBoundingClientRect();
-
-    // Detect collision
-    if ((playerRect.x < obstacleRect.x + obstacleRect.width &&
-        playerRect.x + playerRect.width > obstacleRect.x &&
-        playerRect.y < obstacleRect.y + obstacleRect.height &&
-        playerRect.height + playerRect.y > obstacleRect.y) || 
-        (playerRect.x < topObstacleRect.x + topObstacleRect.width &&
-        playerRect.x + playerRect.width > topObstacleRect.x &&
-        playerRect.y < topObstacleRect.y + topObstacleRect.height &&
-        playerRect.height + playerRect.y > topObstacleRect.y)) {
-        this._endGame();
-    }
-
-    // Increase score if obstacle successfully avoided
-    if (this._obstacleRight > this._gameContainer.offsetWidth) {
-        this._score++;
-        this._scoreDisplay.textContent = 'Score: ' + this._score;
+if (this._obstacleRight > this._gameContainer.offsetWidth) {
+    this._score++;
+    this._scoreDisplay.textContent = 'Score: ' + this._score;
+    if (this._gameContainer.contains(this._obstacle)) {
         this._gameContainer.removeChild(this._obstacle);
-        this._obstacle = document.createElement('div');
-        this._obstacle.classList.add('obstacle');
-        this._gameContainer.appendChild(this._obstacle);
-        this._obstacleRight = 0;
-    } else {
-        this._obstacleRight += 5;
-        this._obstacle.style.right = `${this._obstacleRight}px`;
     }
-
-    if (this._topObstacleRight > this._gameContainer.offsetWidth + this.randomOffset()) {
-        this._gameContainer.removeChild(this._topObstacle);
-        this._topObstacle = document.createElement('div');
-        this._topObstacle.classList.add('top-obstacle');
-        this._gameContainer.appendChild(this._topObstacle);
-        this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset();
-    } else {
-        this._topObstacleRight += 5;
-        this._topObstacle.style.right = `${this._topObstacleRight}px`;
-    }
+    this._obstacle = document.createElement('div');
+    this._obstacle.classList.add('obstacle');
+    this._gameContainer.appendChild(this._obstacle);
+    this._obstacleRight = 0;
+} else {
+    this._obstacleRight += 5;
+    this._obstacle.style.right = `${this._obstacleRight}px`;
 }
 
+if (this._topObstacleRight > this._gameContainer.offsetWidth + this.randomOffset()) {
+    if (this._gameContainer.contains(this._topObstacle)) {
+        this._gameContainer.removeChild(this._topObstacle);
+    }
+    this._topObstacle = document.createElement('div');
+    this._topObstacle.classList.add('top-obstacle');
+    this._gameContainer.appendChild(this._topObstacle);
+    this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset();
+} else {
+    this._topObstacleRight += 5;
+    this._topObstacle.style.right = `${this._topObstacleRight}px`;
+}
 
-        _endGame() {
-            clearInterval(this._gameInterval);
-            this._obstacle.remove();
-            this._topObstacle.remove();
-            alert('Game Over!');
-            this._replayButton.style.display = 'block';
-            this._jumpButton.style.display = 'none';
-            this._dunkButton.style.display = 'none';
-            this._pauseButton.style.display = 'none';
-        }
+     _endGame() {
+    clearInterval(this._gameInterval);
+    if (this._gameContainer.contains(this._obstacle)) {
+        this._gameContainer.removeChild(this._obstacle);
+    }
+    if (this._gameContainer.contains(this._topObstacle)) {
+        this._gameContainer.removeChild(this._topObstacle);
+    }
+    alert('Game Over!');
+    this._replayButton.style.display = 'block';
+    this._jumpButton.style.display = 'none';
+    this._dunkButton.style.display = 'none';
+    this._pauseButton.style.display = 'none';
+}
 
         _replayGame() {
             this._score = 0;
