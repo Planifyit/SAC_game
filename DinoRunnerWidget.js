@@ -21,18 +21,20 @@
     background-size: cover;
             }
             .obstacle {
-                right: 0;
-                height: 80px;
-                width: 20px;
-                background: red;
-            }
-            .top-obstacle {
-                right: 0;
-                top: 0;
-                height: 80px;
-                width: 20px;
-                background: blue;
-            }
+    position: absolute;
+    right: 0;
+    height: 80px;
+    width: 20px;
+    background: red;
+}
+.top-obstacle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 80px;
+    width: 20px;
+    background: blue;
+}
             .score {
                 position: absolute;
                 right: 10px;
