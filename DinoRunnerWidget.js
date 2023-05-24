@@ -104,33 +104,35 @@ _startGame() {
     this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset(); // Initialize top obstacle offscreen to the right
 }
 
-if (this._obstacleRight > this._gameContainer.offsetWidth) {
-    this._score++;
-    this._scoreDisplay.textContent = 'Score: ' + this._score;
-    if (this._gameContainer.contains(this._obstacle)) {
-        this._gameContainer.removeChild(this._obstacle);
-    }
-    this._obstacle = document.createElement('div');
-    this._obstacle.classList.add('obstacle');
-    this._gameContainer.appendChild(this._obstacle);
-    this._obstacleRight = 0;
-} else {
-    this._obstacleRight += 5;
-    this._obstacle.style.right = `${this._obstacleRight}px`;
-}
-
-if (this._topObstacleRight > this._gameContainer.offsetWidth + this.randomOffset()) {
-    if (this._gameContainer.contains(this._topObstacle)) {
-        this._gameContainer.removeChild(this._topObstacle);
-    }
-    this._topObstacle = document.createElement('div');
-    this._topObstacle.classList.add('top-obstacle');
-    this._gameContainer.appendChild(this._topObstacle);
-    this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset();
-} else {
-    this._topObstacleRight += 5;
-    this._topObstacle.style.right = `${this._topObstacleRight}px`;
-}
+     _gameLoop() {
+            if (this._obstacleRight > this._gameContainer.offsetWidth) {
+                this._score++;
+                this._scoreDisplay.textContent = 'Score: ' + this._score;
+                if (this._gameContainer.contains(this._obstacle)) {
+                    this._gameContainer.removeChild(this._obstacle);
+                }
+                this._obstacle = document.createElement('div');
+                this._obstacle.classList.add('obstacle');
+                this._gameContainer.appendChild(this._obstacle);
+                this._obstacleRight = 0;
+            } else {
+                this._obstacleRight += 5;
+                this._obstacle.style.right = `${this._obstacleRight}px`;
+            }
+        
+            if (this._topObstacleRight > this._gameContainer.offsetWidth + this.randomOffset()) {
+                if (this._gameContainer.contains(this._topObstacle)) {
+                    this._gameContainer.removeChild(this._topObstacle);
+                }
+                this._topObstacle = document.createElement('div');
+                this._topObstacle.classList.add('top-obstacle');
+                this._gameContainer.appendChild(this._topObstacle);
+                this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset();
+            } else {
+                this._topObstacleRight += 5;
+                this._topObstacle.style.right = `${this._topObstacleRight}px`;
+            }
+        }
 
      _endGame() {
     clearInterval(this._gameInterval);
