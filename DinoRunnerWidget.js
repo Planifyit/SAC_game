@@ -41,6 +41,26 @@
             .paused {
                 animation-play-state: paused;
             }
+            
+             .start-button, .replay-button, .jump-button, .dunk-button, .pause-button {
+        margin: 10px;
+      }
+
+      .start-button, .replay-button {
+        background: orange;
+        color: white;
+      }
+
+      .jump-button {
+        background: red;
+        color: white;
+      }
+
+      .pause-button {
+        background: blue;
+        color: white;
+      }
+      
         </style>
         <div class="game-container">
             <div class="player"></div>
