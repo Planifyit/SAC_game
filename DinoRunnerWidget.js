@@ -131,7 +131,7 @@ _gameLoop() {
         this._topObstacle = document.createElement('div');
         this._topObstacle.classList.add('top-obstacle');
         this._gameContainer.appendChild(this._topObstacle);
-        this._topObstacleRight = this._gameContainer.offsetWidth + this.randomOffset(); // Initialize top obstacle offscreen to the right
+        this._topObstacleRight = 0; // Reset to the start after it has passed the game container
     } else {
         this._topObstacleRight += 5;
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
