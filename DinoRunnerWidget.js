@@ -64,6 +64,7 @@
 
             this._score = 0;
             this._isPaused = false;
+            this._isJumping = false;
         }
 
         connectedCallback() {
@@ -83,10 +84,20 @@
             this._jumpButton.style.display = 'block';
             this._pauseButton.style.display = 'block';
         }
+_gameLoop() {
+    if (this._isPaused || this._isJumping) return;
 
-   _gameLoop() {
+    const playerRect = this._player.getBoundingClientRect();
     const obstacleRect = this._obstacle.getBoundingClientRect();
-    
+
+    // Detect collision
+    if (playerRect.x < obstacleRect.x + obstacleRect.width &&
+        playerRect.x + playerRect.width > obstacleRect.x &&
+        playerRect.y < obstacleRect.y + obstacleRect.height &&
+        playerRect.height + playerRect.y > obstacleRect.y) {
+        this._endGame();
+    }
+
     // Increase score if obstacle successfully avoided
     if (obstacleRect.right < 0) {
         this._score++;
@@ -95,19 +106,6 @@
         this._obstacle = document.createElement('div');
         this._obstacle.classList.add('obstacle');
         this._gameContainer.appendChild(this._obstacle);
-    }
-
-    if (this._isPaused || this._isJumping) return;
-
-    const playerRect = this._player.getBoundingClientRect();
-
-    // Detect collision
-    if (playerRect.x < obstacleRect.x + obstacleRect.width &&
-        playerRect.x + playerRect.width > obstacleRect.x &&
-        playerRect.bottom < obstacleRect.y + obstacleRect.height &&
-        playerRect.height + playerRect.y > obstacleRect.y &&
-        this._player.style.bottom === '0px') {
-        this._endGame();
     }
 }
 
