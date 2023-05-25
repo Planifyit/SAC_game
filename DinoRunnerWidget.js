@@ -262,14 +262,21 @@ _endGame() {
     if (this._gameContainer.contains(this._topObstacle)) {
         this._gameContainer.removeChild(this._topObstacle);
     }
-    this._updateTopScores(this._score);
-    this._gameOverElement.innerHTML = 'Game Over!<br>Top scores: ' + localStorage.getItem('topScores');
-    this._gameOverElement.style.display = 'block';
+    this._gameOverElement = document.createElement('div');
+    this._gameOverElement.classList.add('game-over');
+    this._gameOverElement.innerHTML = `
+        <h2>Game Over!</h2>
+        <p>Your score: ${this._score}</p>
+        <p>Top scores:</p>
+        <ol>${this._topScores.map(score => `<li>${score}</li>`).join('')}</ol>
+    `;
+    this._gameContainer.appendChild(this._gameOverElement);
     this._replayButton.style.display = 'block';
     this._jumpButton.style.display = 'none';
     this._dunkButton.style.display = 'none';
     this._pauseButton.style.display = 'none';
 }
+
 
 _replayGame() {
     this._score = 0;
