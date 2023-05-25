@@ -95,7 +95,7 @@
         <button class="pause-button" style="display: none;">Pause</button>
     `;
 
-    class PlanifyitRunner extends HTMLElement {
+    class PlanifyitRunnerWidget extends HTMLElement {
         constructor() {
             super();
             this._blueStarted = false;
@@ -312,5 +312,5 @@ _replayGame() {
         }
     }
 
-    customElements.define('Planifyit-runner-widget', PlanifyitRunner);
+    customElements.define('planifyit-runner-widget', PlanifyitRunnerWidget);
 })();
