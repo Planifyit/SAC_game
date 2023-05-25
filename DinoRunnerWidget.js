@@ -257,13 +257,6 @@ _gameLoop() {
 
 _endGame() {
     clearInterval(this._gameInterval);
-    if (this._gameContainer.contains(this._obstacle)) {
-        this._gameContainer.removeChild(this._obstacle);
-    }
-    if (this._gameContainer.contains(this._topObstacle)) {
-        this._gameContainer.removeChild(this._topObstacle);
-    }
-    // Update the existing game over element
     this._gameOverElement.innerHTML = `
         <h2>Game Over!</h2>
         <p>Your score: ${this._score}</p>
@@ -276,6 +269,7 @@ _endGame() {
     this._dunkButton.style.display = 'none';
     this._pauseButton.style.display = 'none';
 }
+
 
 
 _replayGame() {
