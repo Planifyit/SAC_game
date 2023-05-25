@@ -1,7 +1,7 @@
 {
-    "name": "dinoRunnerWidget",
-    "description": "Dino Runner Game Widget",
-    "newInstancePrefix": "dinoRunnerWidget",
+    "name": "Planify RunnerWidget",
+    "description": "Planify Runner Game Widget",
+    "newInstancePrefix": "PlanifyRunnerWidget",
     "eula": "",
     "vendor": "Planifyit",
     "license": "",
