@@ -8,9 +8,9 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        padding: 20px;
+        padding: 15px;
         border: 3px solid red; /* Add this line */
-        background: red;
+        background: white;
         text-align: center;
         z-index: 10;
     }        
