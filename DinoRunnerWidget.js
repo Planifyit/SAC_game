@@ -116,26 +116,31 @@
             this._dunkButton.addEventListener('click', this._dunk.bind(this));
             this._pauseButton.addEventListener('click', this._pause.bind(this));
         }
-_endGame() {
-    clearInterval(this._gameInterval);
-    if (this._gameContainer.contains(this._obstacle)) {
-        this._gameContainer.removeChild(this._obstacle);
-    }
-    if (this._gameContainer.contains(this._topObstacle)) {
-        this._gameContainer.removeChild(this._topObstacle);
-    }
-    alert('Game Over!');
-    this._replayButton.style.display = 'block';
-    this._jumpButton.style.display = 'none';
-    this._dunkButton.style.display = 'none';
-    this._pauseButton.style.display = 'none';
 
-    // Save score to LocalStorage
-    let scores = JSON.parse(localStorage.getItem('scores')) || [];
-    scores.push(this._score);
-    scores.sort((a, b) => b - a);
-    scores = scores.slice(0, 10);  // Keep only top 10 scores
-    localStorage.setItem('scores', JSON.stringify(scores));
+_updateTopScores(newScore) {
+    let topScores = JSON.parse(localStorage.getItem('topScores')) || [];
+    topScores.push(newScore);
+    topScores.sort((a, b) => b - a);
+    topScores = topScores.slice(0, 10); // Keep only top 10 scores
+    localStorage.setItem('topScores', JSON.stringify(topScores));
+}        
+        
+_startGame() {
+    this._player = this._shadowRoot.querySelector('.player');
+    this._player.style.bottom = '0px'; // Reset the position of the dino
+    this._obstacle = document.createElement('div');
+    this._obstacle.classList.add('obstacle');
+    this._gameContainer.appendChild(this._obstacle);
+    this._topObstacle = null; // Don't create the blue obstacle yet
+    this._gameInterval = setInterval(this._gameLoop.bind(this), 50);
+    this._startButton.style.display = 'none';
+    this._jumpButton.style.display = 'block';
+    this._dunkButton.style.display = 'block';
+    this._pauseButton.style.display = 'block';
+    this._obstacleRight = 0;
+    this._topObstacleRight = 0;
+    this._blueStarted = false;
+    this._redStarted = true;
 }
 
 
@@ -224,7 +229,7 @@ _gameLoop() {
 
 
 
-     _endGame() {
+_endGame() {
     clearInterval(this._gameInterval);
     if (this._gameContainer.contains(this._obstacle)) {
         this._gameContainer.removeChild(this._obstacle);
@@ -232,22 +237,23 @@ _gameLoop() {
     if (this._gameContainer.contains(this._topObstacle)) {
         this._gameContainer.removeChild(this._topObstacle);
     }
-    alert('Game Over!');
+    this._updateTopScores(this._score);
+    alert('Game Over!\nTop scores: ' + localStorage.getItem('topScores'));
     this._replayButton.style.display = 'block';
     this._jumpButton.style.display = 'none';
     this._dunkButton.style.display = 'none';
     this._pauseButton.style.display = 'none';
 }
 
-        _replayGame() {
-            this._score = 0;
-            this._scoreDisplay.textContent = 'Score: ' + this._score;
-            this._replayButton.style.display = 'none';
-            this._jumpButton.style.display = 'none';
-            this._dunkButton.style.display = 'none';
-            this._pauseButton.style.display = 'none';
-            this._startGame();
-        }
+_replayGame() {
+    this._score = 0;
+    this._scoreDisplay.textContent = 'Score: ' + this._score;
+    this._replayButton.style.display = 'none';
+    this._jumpButton.style.display = 'none';
+    this._dunkButton.style.display = 'none';
+    this._pauseButton.style.display = 'none';
+    this._startGame();
+}
 
         _jump() {
             this._isJumping = true;
