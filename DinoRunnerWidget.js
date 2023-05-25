@@ -134,43 +134,33 @@ _gameLoop() {
     if(this._isPaused) return;
 
     // For the bottom obstacle...
-    if (this._obstacleRight > this._gameContainer.offsetWidth) {
-        this._score++;
-        this._scoreDisplay.textContent = 'Score: ' + this._score;
+    if (this._blueStarted === false && this._obstacleRight > this._gameContainer.offsetWidth - this._player.offsetWidth) {
+        this._blueStarted = true;
         if (this._gameContainer.contains(this._obstacle)) {
             this._gameContainer.removeChild(this._obstacle);
+        }
+        this._topObstacle = document.createElement('div');
+        this._topObstacle.classList.add('top-obstacle');
+        this._gameContainer.appendChild(this._topObstacle);
+        this._topObstacleRight = 0;
+    } else if (this._blueStarted === false) {
+        this._obstacleRight += 5;
+        this._obstacle.style.right = `${this._obstacleRight}px`;
+    }
+
+    // For the top obstacle...
+    if (this._blueStarted && this._topObstacleRight > this._gameContainer.offsetWidth - this._player.offsetWidth) {
+        this._blueStarted = false;
+        if (this._gameContainer.contains(this._topObstacle)) {
+            this._gameContainer.removeChild(this._topObstacle);
         }
         this._obstacle = document.createElement('div');
         this._obstacle.classList.add('obstacle');
         this._gameContainer.appendChild(this._obstacle);
         this._obstacleRight = 0;
-    } else {
-        this._obstacleRight += 5;
-        this._obstacle.style.right = `${this._obstacleRight}px`;
-
-        // Check if red obstacle has reached the same position as the dino
-        if (this._obstacleRight >= this._gameContainer.offsetWidth - this._player.offsetWidth) {
-            // Start blue obstacle if it hasn't started yet
-            if (!this._blueStarted) {
-                this._blueStarted = true;
-            }
-        }
-    }
-
-    // For the top obstacle...
-    if (this._blueStarted) {
-        if (this._topObstacleRight > this._gameContainer.offsetWidth) {
-            if (this._gameContainer.contains(this._topObstacle)) {
-                this._gameContainer.removeChild(this._topObstacle);
-            }
-            this._topObstacle = document.createElement('div');
-            this._topObstacle.classList.add('top-obstacle');
-            this._gameContainer.appendChild(this._topObstacle);
-            this._topObstacleRight = 0;
-        } else {
-            this._topObstacleRight += 5;
-            this._topObstacle.style.right = `${this._topObstacleRight}px`;
-        }
+    } else if (this._blueStarted) {
+        this._topObstacleRight += 5;
+        this._topObstacle.style.right = `${this._topObstacleRight}px`;
     }
 
     // Collision detection
@@ -178,12 +168,12 @@ _gameLoop() {
     const obstacleRect = this._obstacle.getBoundingClientRect();
     const topObstacleRect = this._topObstacle.getBoundingClientRect();
 
-    if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
+    if (this._blueStarted === false && playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
         playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
         this._endGame();
     }
 
-    if (playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
+    if (this._blueStarted && playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
         playerRect.bottom > topObstacleRect.top && playerRect.top < topObstacleRect.bottom) {
         this._endGame();
     }
