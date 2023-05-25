@@ -151,6 +151,9 @@ _updateTopScores(newScore) {
 }        
         
 _startGame() {
+     while (this._gameContainer.firstChild) {
+        this._gameContainer.removeChild(this._gameContainer.firstChild);
+    }
     this._player = this._shadowRoot.querySelector('.player');
     this._player.style.bottom = '0px'; // Reset the position of the dino
     this._obstacle = document.createElement('div');
@@ -254,7 +257,6 @@ _gameLoop() {
 
 
 
-
 _endGame() {
     clearInterval(this._gameInterval);
     this._updateTopScores(this._score);
@@ -270,7 +272,17 @@ _endGame() {
     this._jumpButton.style.display = 'none';
     this._dunkButton.style.display = 'none';
     this._pauseButton.style.display = 'none';
+
+    // Remove obstacles from the game area
+    if (this._gameContainer.contains(this._obstacle)) {
+        this._gameContainer.removeChild(this._obstacle);
+    }
+    if (this._gameContainer.contains(this._topObstacle)) {
+        this._gameContainer.removeChild(this._topObstacle);
+    }
 }
+
+
 
 
 _replayGame() {
