@@ -128,14 +128,14 @@ _gameLoop() {
     if(this._isPaused) return;
 
     // For the bottom obstacle...
-    if (!this._blueStarted) {
-        if (!this._obstacle) {
-            this._obstacle = document.createElement('div');
-            this._obstacle.classList.add('obstacle');
-            this._gameContainer.appendChild(this._obstacle);
-            this._obstacleRight = 0; // start from the right edge
-        }
+    if (!this._blueStarted && !this._obstacle) {
+        this._obstacle = document.createElement('div');
+        this._obstacle.classList.add('obstacle');
+        this._gameContainer.appendChild(this._obstacle);
+        this._obstacleRight = 0; // start from the right edge
+    }
 
+    if (this._obstacle) {
         this._obstacleRight += 5; // increase the right value, moving left
         this._obstacle.style.right = `${this._obstacleRight}px`;
 
@@ -157,14 +157,14 @@ _gameLoop() {
     }
 
     // For the top obstacle...
-    if (this._blueStarted) {
-        if (!this._topObstacle) {
-            this._topObstacle = document.createElement('div');
-            this._topObstacle.classList.add('top-obstacle');
-            this._gameContainer.appendChild(this._topObstacle);
-            this._topObstacleRight = 0; // start from the right edge
-        }
+    if (this._blueStarted && !this._topObstacle) {
+        this._topObstacle = document.createElement('div');
+        this._topObstacle.classList.add('top-obstacle');
+        this._gameContainer.appendChild(this._topObstacle);
+        this._topObstacleRight = 0; // start from the right edge
+    }
 
+    if (this._topObstacle) {
         this._topObstacleRight += 5; // increase the right value, moving left
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
 
@@ -184,6 +184,7 @@ _gameLoop() {
             }
         }
     }
+
 
     // Collision detection
     const playerRect = this._player.getBoundingClientRect();
