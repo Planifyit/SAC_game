@@ -117,16 +117,13 @@
             this._pauseButton.addEventListener('click', this._pause.bind(this));
         }
 
-       
 _startGame() {
     this._player = this._shadowRoot.querySelector('.player');
     this._player.style.bottom = '0px'; // Reset the position of the dino
     this._obstacle = document.createElement('div');
     this._obstacle.classList.add('obstacle');
     this._gameContainer.appendChild(this._obstacle);
-    this._topObstacle = document.createElement('div');
-    this._topObstacle.classList.add('top-obstacle');
-    this._gameContainer.appendChild(this._topObstacle);
+    this._topObstacle = null; // Don't create the blue obstacle yet
     this._gameInterval = setInterval(this._gameLoop.bind(this), 50);
     this._startButton.style.display = 'none';
     this._jumpButton.style.display = 'block';
@@ -137,6 +134,7 @@ _startGame() {
     this._blueStarted = false;
     this._redStarted = true;
 }
+
 
 _gameLoop() {
     if(this._isPaused) return;
