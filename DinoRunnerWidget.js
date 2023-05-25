@@ -152,6 +152,8 @@ _gameLoop() {
             if (this._gameContainer.contains(this._obstacle)) {
                 this._gameContainer.removeChild(this._obstacle);
                 this._obstacle = null;
+                this._score++;
+                this._scoreDisplay.textContent = 'Score: ' + this._score;
             }
         }
     }
@@ -181,22 +183,23 @@ _gameLoop() {
             if (this._gameContainer.contains(this._topObstacle)) {
                 this._gameContainer.removeChild(this._topObstacle);
                 this._topObstacle = null;
+                this._score++;
+                this._scoreDisplay.textContent = 'Score: ' + this._score;
             }
         }
     }
 
-
     // Collision detection
     const playerRect = this._player.getBoundingClientRect();
-    const obstacleRect = this._obstacle.getBoundingClientRect();
-    const topObstacleRect = this._topObstacle.getBoundingClientRect();
+    const obstacleRect = this._obstacle ? this._obstacle.getBoundingClientRect() : null;
+    const topObstacleRect = this._topObstacle ? this._topObstacle.getBoundingClientRect() : null;
 
-    if (this._blueStarted === false && playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
+    if (obstacleRect && playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
         playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
         this._endGame();
     }
 
-    if (this._blueStarted && playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
+    if (topObstacleRect && playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
         playerRect.bottom > topObstacleRect.top && playerRect.top < topObstacleRect.bottom) {
         this._endGame();
     }
