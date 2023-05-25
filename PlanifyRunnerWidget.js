@@ -9,7 +9,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 15px;
-        border: 3px solid red; /* Add this line */
+        border: 3px solid red; 
         background: white;
         text-align: center;
         z-index: 10;
