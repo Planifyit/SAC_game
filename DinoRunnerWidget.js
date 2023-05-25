@@ -103,6 +103,18 @@
             this._obstacleRight = 0;
             this._topObstacleRight = 0;
               this._topObstacleOffset = this.randomOffset();
+            
+            this._gameOverElement = document.createElement('div');
+    this._gameOverElement.style.position = 'absolute';
+    this._gameOverElement.style.top = '50%';
+    this._gameOverElement.style.left = '50%';
+    this._gameOverElement.style.transform = 'translate(-50%, -50%)';
+    this._gameOverElement.style.backgroundColor = 'white';
+    this._gameOverElement.style.padding = '20px';
+    this._gameOverElement.style.textAlign = 'center';
+    this._gameOverElement.style.display = 'none';
+    this._gameContainer.appendChild(this._gameOverElement);
+            
         }
 
         randomOffset() {
@@ -238,7 +250,8 @@ _endGame() {
         this._gameContainer.removeChild(this._topObstacle);
     }
     this._updateTopScores(this._score);
-    alert('Game Over!\nTop scores: ' + localStorage.getItem('topScores'));
+    this._gameOverElement.innerHTML = 'Game Over!<br>Top scores: ' + localStorage.getItem('topScores');
+    this._gameOverElement.style.display = 'block';
     this._replayButton.style.display = 'block';
     this._jumpButton.style.display = 'none';
     this._dunkButton.style.display = 'none';
@@ -252,8 +265,10 @@ _replayGame() {
     this._jumpButton.style.display = 'none';
     this._dunkButton.style.display = 'none';
     this._pauseButton.style.display = 'none';
+    this._gameOverElement.style.display = 'none';
     this._startGame();
 }
+
 
         _jump() {
             this._isJumping = true;
