@@ -120,13 +120,22 @@
        
 _startGame() {
     this._player = this._shadowRoot.querySelector('.player');
+    this._player.style.bottom = '0px'; // Reset the position of the dino
+    this._obstacle = document.createElement('div');
+    this._obstacle.classList.add('obstacle');
+    this._gameContainer.appendChild(this._obstacle);
+    this._topObstacle = document.createElement('div');
+    this._topObstacle.classList.add('top-obstacle');
+    this._gameContainer.appendChild(this._topObstacle);
     this._gameInterval = setInterval(this._gameLoop.bind(this), 50);
     this._startButton.style.display = 'none';
     this._jumpButton.style.display = 'block';
     this._dunkButton.style.display = 'block';
     this._pauseButton.style.display = 'block';
-    this._obstacleRight = this._gameContainer.offsetWidth;
-    this._topObstacleRight = this._gameContainer.offsetWidth; 
+    this._obstacleRight = 0;
+    this._topObstacleRight = 0;
+    this._blueStarted = false;
+    this._redStarted = true;
 }
 
 _gameLoop() {
