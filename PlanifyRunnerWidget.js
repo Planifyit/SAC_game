@@ -2,7 +2,14 @@
     let tmpl = document.createElement('template');
     tmpl.innerHTML = `
         <style>
-        
+   
+   .follow-link {
+        display: block;
+        margin: 10px;
+        text-decoration: none;
+        color: blue;
+    }
+    
     .game-over {
         position: absolute;
         top: 50%;
@@ -93,9 +100,11 @@
         <button class="jump-button" style="display: none;">Jump</button>
         <button class="dunk-button" style="display: none;">Dunk</button>
         <button class="pause-button" style="display: none;">Pause</button>
+        <a class="follow-link" href="https://www.linkedin.com/company/planifyit/" target="_blank">Follow Planify on Linkedin</a>
+
     `;
 
-    class DinoRunner extends HTMLElement {
+    class PlanifyRunner extends HTMLElement {
         constructor() {
             super();
             this._blueStarted = false;
@@ -121,7 +130,7 @@
         }
 
         randomOffset() {
-        // Returns a random number between 50 and 150
+   
         return Math.floor(Math.random() * 200) + 50;
     }
         connectedCallback() {
@@ -149,7 +158,7 @@ _startGame() {
     }
 
     this._player = this._shadowRoot.querySelector('.player');
-    this._player.style.bottom = '0px'; // Reset the position of the dino
+    this._player.style.bottom = '0px'; 
     this._obstacle = document.createElement('div');
     this._obstacle.classList.add('obstacle');
     this._gameContainer.appendChild(this._obstacle);
@@ -181,7 +190,7 @@ _gameLoop() {
         this._obstacleRight += 5; // increase the right value, moving left
         this._obstacle.style.right = `${this._obstacleRight}px`;
 
-        // Check if red obstacle has reached the same position as the dino
+
         if (this._obstacleRight >= this._gameContainer.offsetWidth - this._player.offsetWidth) {
             // Start blue obstacle if it hasn't started yet
             if (!this._blueStarted) {
@@ -189,7 +198,7 @@ _gameLoop() {
             }
         }
 
-        // Check if red obstacle has gone past the left edge of the game container
+
         if (this._obstacleRight >= this._gameContainer.offsetWidth) {
             if (this._gameContainer.contains(this._obstacle)) {
                 this._gameContainer.removeChild(this._obstacle);
@@ -200,7 +209,7 @@ _gameLoop() {
         }
     }
 
-    // For the top obstacle...
+
     if (this._blueStarted && !this._topObstacle) {
         this._topObstacle = document.createElement('div');
         this._topObstacle.classList.add('top-obstacle');
@@ -212,7 +221,6 @@ _gameLoop() {
         this._topObstacleRight += 5; // increase the right value, moving left
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
 
-        // Check if blue obstacle has reached the same position as the dino
         if (this._topObstacleRight >= this._gameContainer.offsetWidth - this._player.offsetWidth) {
             // Start red obstacle if it hasn't started yet
             if (this._blueStarted) {
@@ -231,7 +239,7 @@ _gameLoop() {
         }
     }
 
-    // Collision detection
+
  const playerRect = this._player.getBoundingClientRect();
     const obstacleRect = this._obstacle ? this._obstacle.getBoundingClientRect() : null;
     const topObstacleRect = this._topObstacle ? this._topObstacle.getBoundingClientRect() : null;
@@ -245,7 +253,7 @@ _gameLoop() {
     if (topObstacleRect && playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
         playerRect.bottom > topObstacleRect.top && playerRect.top < topObstacleRect.bottom) {
         this._endGame();
-        return; // Stop the game loop after game over
+        return; 
     }
 }
 
@@ -312,5 +320,5 @@ _replayGame() {
         }
     }
 
-    customElements.define('dino-runner-widget', DinoRunner);
+    customElements.define('planify-runner-widget', PlanifyRunner);
 })();
