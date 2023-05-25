@@ -257,6 +257,8 @@ _gameLoop() {
 
 _endGame() {
     clearInterval(this._gameInterval);
+    this._updateTopScores(this._score);
+    this._topScores = JSON.parse(localStorage.getItem('topScores')) || [];
     this._gameOverElement.innerHTML = `
         <h2>Game Over!</h2>
         <p>Your score: ${this._score}</p>
@@ -269,7 +271,6 @@ _endGame() {
     this._dunkButton.style.display = 'none';
     this._pauseButton.style.display = 'none';
 }
-
 
 
 _replayGame() {
