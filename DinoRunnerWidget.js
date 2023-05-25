@@ -25,7 +25,7 @@
     right: 0;
     height: 80px;
     width: 20px;
-    background: red;
+    background: #5F6A9D;
 }
 .top-obstacle {
     position: absolute;
@@ -33,7 +33,7 @@
     top: 0;
     height: 100px;
     width: 20px;
-    background: blue;
+    background: orange;
 }
             .score {
                 position: absolute;
