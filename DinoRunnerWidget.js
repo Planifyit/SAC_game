@@ -10,7 +10,7 @@
         transform: translate(-50%, -50%);
         padding: 20px;
         border: 3px solid red; /* Add this line */
-        background: white;
+        background: red;
         text-align: center;
         z-index: 10;
     }        
