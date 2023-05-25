@@ -151,9 +151,13 @@ _updateTopScores(newScore) {
 }        
         
 _startGame() {
-     while (this._gameContainer.firstChild) {
-        this._gameContainer.removeChild(this._gameContainer.firstChild);
+ if (this._gameContainer.contains(this._obstacle)) {
+        this._gameContainer.removeChild(this._obstacle);
     }
+    if (this._gameContainer.contains(this._topObstacle)) {
+        this._gameContainer.removeChild(this._topObstacle);
+    }
+
     this._player = this._shadowRoot.querySelector('.player');
     this._player.style.bottom = '0px'; // Reset the position of the dino
     this._obstacle = document.createElement('div');
