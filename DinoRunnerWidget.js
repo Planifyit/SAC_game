@@ -2,6 +2,19 @@
     let tmpl = document.createElement('template');
     tmpl.innerHTML = `
         <style>
+        
+    .game-over {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        border: 3px solid red; /* Add this line */
+        background: white;
+        text-align: center;
+        z-index: 10;
+    }        
+        
           .game-container {
                 position: relative;
                 height: 200px;
