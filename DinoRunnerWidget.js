@@ -51,12 +51,17 @@
 }
 
       .start-button, .replay-button {
-        background: orange;
+        background: blue;
         color: white;
       }
 
       .jump-button {
-        background: red;
+        background: #5F6A9D;
+        color: white;
+      }
+      
+      .dunk-button {
+        background: orange;
         color: white;
       }
 
