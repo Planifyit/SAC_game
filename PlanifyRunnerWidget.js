@@ -95,7 +95,7 @@
         <button class="pause-button" style="display: none;">Pause</button>
     `;
 
-    class PlanifyRunner extends HTMLElement {
+    class PlanifyitRunner extends HTMLElement {
         constructor() {
             super();
             this._blueStarted = false;
@@ -149,7 +149,7 @@ _startGame() {
     }
 
     this._player = this._shadowRoot.querySelector('.player');
-    this._player.style.bottom = '0px'; // Reset the position of the Planify
+    this._player.style.bottom = '0px'; // Reset the position of the Planifyit
     this._obstacle = document.createElement('div');
     this._obstacle.classList.add('obstacle');
     this._gameContainer.appendChild(this._obstacle);
@@ -181,7 +181,7 @@ _gameLoop() {
         this._obstacleRight += 5; // increase the right value, moving left
         this._obstacle.style.right = `${this._obstacleRight}px`;
 
-        // Check if red obstacle has reached the same position as the Planify
+        // Check if red obstacle has reached the same position as the Planifyit
         if (this._obstacleRight >= this._gameContainer.offsetWidth - this._player.offsetWidth) {
             // Start blue obstacle if it hasn't started yet
             if (!this._blueStarted) {
@@ -212,7 +212,7 @@ _gameLoop() {
         this._topObstacleRight += 5; // increase the right value, moving left
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
 
-        // Check if blue obstacle has reached the same position as the Planify
+        // Check if blue obstacle has reached the same position as the Planifyit
         if (this._topObstacleRight >= this._gameContainer.offsetWidth - this._player.offsetWidth) {
             // Start red obstacle if it hasn't started yet
             if (this._blueStarted) {
@@ -312,5 +312,5 @@ _replayGame() {
         }
     }
 
-    customElements.define('Planify-runner-widget', PlanifyRunner);
+    customElements.define('Planifyit-runner-widget', PlanifyitRunner);
 })();
