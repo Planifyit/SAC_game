@@ -149,8 +149,10 @@ _gameLoop() {
 
         // Check if red obstacle has gone past the left edge of the game container
         if (this._obstacleRight >= this._gameContainer.offsetWidth) {
-            this._gameContainer.removeChild(this._obstacle);
-            this._obstacle = null;
+            if (this._gameContainer.contains(this._obstacle)) {
+                this._gameContainer.removeChild(this._obstacle);
+                this._obstacle = null;
+            }
         }
     }
 
@@ -176,10 +178,13 @@ _gameLoop() {
 
         // Check if blue obstacle has gone past the left edge of the game container
         if (this._topObstacleRight >= this._gameContainer.offsetWidth) {
-            this._gameContainer.removeChild(this._topObstacle);
-            this._topObstacle = null;
+            if (this._gameContainer.contains(this._topObstacle)) {
+                this._gameContainer.removeChild(this._topObstacle);
+                this._topObstacle = null;
+            }
         }
     }
+
     // Collision detection
     const playerRect = this._player.getBoundingClientRect();
     const obstacleRect = this._obstacle.getBoundingClientRect();
