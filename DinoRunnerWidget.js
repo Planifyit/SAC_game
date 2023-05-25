@@ -146,7 +146,7 @@ _updateTopScores(newScore) {
     let topScores = JSON.parse(localStorage.getItem('topScores')) || [];
     topScores.push(newScore);
     topScores.sort((a, b) => b - a);
-    topScores = topScores.slice(0, 10); // Keep only top 10 scores
+    topScores = topScores.slice(0, 5); // Keep only top 10 scores
     localStorage.setItem('topScores', JSON.stringify(topScores));
 }        
         
