@@ -235,21 +235,22 @@ _gameLoop() {
     }
 
     // Collision detection
-    const playerRect = this._player.getBoundingClientRect();
+ const playerRect = this._player.getBoundingClientRect();
     const obstacleRect = this._obstacle ? this._obstacle.getBoundingClientRect() : null;
     const topObstacleRect = this._topObstacle ? this._topObstacle.getBoundingClientRect() : null;
 
     if (obstacleRect && playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right && 
         playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
         this._endGame();
+        return; // Stop the game loop after game over
     }
 
     if (topObstacleRect && playerRect.right > topObstacleRect.left && playerRect.left < topObstacleRect.right && 
         playerRect.bottom > topObstacleRect.top && playerRect.top < topObstacleRect.bottom) {
         this._endGame();
+        return; // Stop the game loop after game over
     }
 }
-
 
 
 
