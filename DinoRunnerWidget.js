@@ -116,23 +116,26 @@
             this._dunkButton.addEventListener('click', this._dunk.bind(this));
             this._pauseButton.addEventListener('click', this._pause.bind(this));
         }
+_endGame() {
+    clearInterval(this._gameInterval);
+    if (this._gameContainer.contains(this._obstacle)) {
+        this._gameContainer.removeChild(this._obstacle);
+    }
+    if (this._gameContainer.contains(this._topObstacle)) {
+        this._gameContainer.removeChild(this._topObstacle);
+    }
+    alert('Game Over!');
+    this._replayButton.style.display = 'block';
+    this._jumpButton.style.display = 'none';
+    this._dunkButton.style.display = 'none';
+    this._pauseButton.style.display = 'none';
 
-_startGame() {
-    this._player = this._shadowRoot.querySelector('.player');
-    this._player.style.bottom = '0px'; // Reset the position of the dino
-    this._obstacle = document.createElement('div');
-    this._obstacle.classList.add('obstacle');
-    this._gameContainer.appendChild(this._obstacle);
-    this._topObstacle = null; // Don't create the blue obstacle yet
-    this._gameInterval = setInterval(this._gameLoop.bind(this), 50);
-    this._startButton.style.display = 'none';
-    this._jumpButton.style.display = 'block';
-    this._dunkButton.style.display = 'block';
-    this._pauseButton.style.display = 'block';
-    this._obstacleRight = 0;
-    this._topObstacleRight = 0;
-    this._blueStarted = false;
-    this._redStarted = true;
+    // Save score to LocalStorage
+    let scores = JSON.parse(localStorage.getItem('scores')) || [];
+    scores.push(this._score);
+    scores.sort((a, b) => b - a);
+    scores = scores.slice(0, 10);  // Keep only top 10 scores
+    localStorage.setItem('scores', JSON.stringify(scores));
 }
 
 
