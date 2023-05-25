@@ -1,7 +1,7 @@
 {
-    "name": "dinoRunnerWidget",
-    "description": "Dino Runner Game Widget",
-    "newInstancePrefix": "dinoRunnerWidget",
+    "name": "planifyitRunnerWidget",
+    "description": "planifyit Runner Game Widget",
+    "newInstancePrefix": "planifyitRunnerWidget",
     "eula": "",
     "vendor": "Planifyit",
     "license": "",
@@ -11,8 +11,8 @@
     "webcomponents": [
         {
             "kind": "main",
-            "tag": "dino-runner-widget",
-            "url": "https://planifyit.github.io/SAC_game/PlanifyRunnerWidget.js",
+            "tag": "planifyit-runner-widget",
+            "url": "https://planifyit.github.io/SAC_game/PlanifyitRunnerWidget.js",
             "integrity": "",
             "ignoreIntegrity": true
         }       
@@ -29,7 +29,7 @@
     },
     "methods": {
         "startGame": {
-            "description": "Starts the Dino Runner game."
+            "description": "Starts the planifyit Runner game."
         },
         "endGame": {
             "description": "Ends the current game."
