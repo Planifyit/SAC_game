@@ -115,19 +115,9 @@
             this._isJumping = false;
             this._obstacleRight = 0;
             this._topObstacleRight = 0;
-              this._topObstacleOffset = this.randomOffset();
+            this._topObstacleOffset = this.randomOffset();
             
-            this._gameOverElement = document.createElement('div');
-    this._gameOverElement.style.position = 'absolute';
-    this._gameOverElement.style.top = '50%';
-    this._gameOverElement.style.left = '50%';
-    this._gameOverElement.style.transform = 'translate(-50%, -50%)';
-    this._gameOverElement.style.backgroundColor = 'white';
-    this._gameOverElement.style.padding = '20px';
-    this._gameOverElement.style.textAlign = 'center';
-    this._gameOverElement.style.display = 'none';
-    this._gameContainer.appendChild(this._gameOverElement);
-            
+                
         }
 
         randomOffset() {
@@ -259,19 +249,19 @@ _gameLoop() {
     }
 }
 
-
-
 _endGame() {
     clearInterval(this._gameInterval);
     this._updateTopScores(this._score);
     this._topScores = JSON.parse(localStorage.getItem('topScores')) || [];
+    this._gameOverElement = document.createElement('div');
+    this._gameOverElement.classList.add('game-over');
     this._gameOverElement.innerHTML = `
         <h2>Game Over!</h2>
         <p>Your score: ${this._score}</p>
         <p>Top scores:</p>
         <ol>${this._topScores.map(score => `<li>${score}</li>`).join('')}</ol>
     `;
-    this._gameOverElement.style.display = 'block'; // Show the game over element
+    this._gameContainer.appendChild(this._gameOverElement);
     this._replayButton.style.display = 'block';
     this._jumpButton.style.display = 'none';
     this._dunkButton.style.display = 'none';
@@ -288,7 +278,6 @@ _endGame() {
 
 
 
-
 _replayGame() {
     this._score = 0;
     this._scoreDisplay.textContent = 'Score: ' + this._score;
@@ -296,7 +285,9 @@ _replayGame() {
     this._jumpButton.style.display = 'none';
     this._dunkButton.style.display = 'none';
     this._pauseButton.style.display = 'none';
-    this._gameOverElement.style.display = 'none';
+    if (this._gameContainer.contains(this._gameOverElement)) {
+        this._gameContainer.removeChild(this._gameOverElement);
+    }
     this._startGame();
 }
 
