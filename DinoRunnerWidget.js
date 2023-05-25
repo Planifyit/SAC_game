@@ -115,54 +115,59 @@
        
 _startGame() {
     this._player = this._shadowRoot.querySelector('.player');
-    this._obstacle = document.createElement('div');
-    this._obstacle.classList.add('obstacle');
-    this._gameContainer.appendChild(this._obstacle);
-    this._topObstacle = document.createElement('div');
-    this._topObstacle.classList.add('top-obstacle');
-    this._gameContainer.appendChild(this._topObstacle);
     this._gameInterval = setInterval(this._gameLoop.bind(this), 50);
     this._startButton.style.display = 'none';
     this._jumpButton.style.display = 'block';
     this._dunkButton.style.display = 'block';
     this._pauseButton.style.display = 'block';
-    this._obstacleRight = 0;
-    this._topObstacleRight = 0; 
-
+    this._obstacleRight = this._gameContainer.offsetWidth;
+    this._topObstacleRight = this._gameContainer.offsetWidth; 
 }
+
 _gameLoop() {
     if(this._isPaused) return;
 
     // For the bottom obstacle...
-    if (this._blueStarted === false && this._obstacleRight > this._gameContainer.offsetWidth - this._player.offsetWidth) {
-        this._blueStarted = true;
-        if (this._gameContainer.contains(this._obstacle)) {
-            this._gameContainer.removeChild(this._obstacle);
+    if (!this._blueStarted) {
+        if (!this._obstacle) {
+            this._obstacle = document.createElement('div');
+            this._obstacle.classList.add('obstacle');
+            this._gameContainer.appendChild(this._obstacle);
+            this._obstacleRight = this._gameContainer.offsetWidth;
         }
-        this._topObstacle = document.createElement('div');
-        this._topObstacle.classList.add('top-obstacle');
-        this._gameContainer.appendChild(this._topObstacle);
-        this._topObstacleRight = 0;
-    } else if (this._blueStarted === false) {
-        this._obstacleRight += 5;
+
+        this._obstacleRight -= 5;
         this._obstacle.style.right = `${this._obstacleRight}px`;
+
+        // Check if red obstacle has reached the same position as the dino
+        if (this._obstacleRight <= this._gameContainer.offsetWidth - this._player.offsetWidth) {
+            // Start blue obstacle if it hasn't started yet
+            this._blueStarted = true;
+            this._gameContainer.removeChild(this._obstacle);
+            this._obstacle = null;
+        }
     }
 
     // For the top obstacle...
-    if (this._blueStarted && this._topObstacleRight > this._gameContainer.offsetWidth - this._player.offsetWidth) {
-        this._blueStarted = false;
-        if (this._gameContainer.contains(this._topObstacle)) {
-            this._gameContainer.removeChild(this._topObstacle);
+    if (this._blueStarted) {
+        if (!this._topObstacle) {
+            this._topObstacle = document.createElement('div');
+            this._topObstacle.classList.add('top-obstacle');
+            this._gameContainer.appendChild(this._topObstacle);
+            this._topObstacleRight = this._gameContainer.offsetWidth;
         }
-        this._obstacle = document.createElement('div');
-        this._obstacle.classList.add('obstacle');
-        this._gameContainer.appendChild(this._obstacle);
-        this._obstacleRight = 0;
-    } else if (this._blueStarted) {
-        this._topObstacleRight += 5;
-        this._topObstacle.style.right = `${this._topObstacleRight}px`;
-    }
 
+        this._topObstacleRight -= 5;
+        this._topObstacle.style.right = `${this._topObstacleRight}px`;
+
+        // Check if blue obstacle has reached the same position as the dino
+        if (this._topObstacleRight <= this._gameContainer.offsetWidth - this._player.offsetWidth) {
+            // Start red obstacle if it hasn't started yet
+            this._blueStarted = false;
+            this._gameContainer.removeChild(this._topObstacle);
+            this._topObstacle = null;
+        }
+    }
     // Collision detection
     const playerRect = this._player.getBoundingClientRect();
     const obstacleRect = this._obstacle.getBoundingClientRect();
