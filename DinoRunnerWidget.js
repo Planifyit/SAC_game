@@ -31,7 +31,7 @@
     position: absolute;
     right: 0;
     top: 0;
-    height: 80px;
+    height: 100px;
     width: 20px;
     background: blue;
 }
