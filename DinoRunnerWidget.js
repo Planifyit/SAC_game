@@ -133,14 +133,14 @@ _gameLoop() {
             this._obstacle = document.createElement('div');
             this._obstacle.classList.add('obstacle');
             this._gameContainer.appendChild(this._obstacle);
-            this._obstacleRight = this._gameContainer.offsetWidth;
+            this._obstacleRight = 0; // start from the right edge
         }
 
-        this._obstacleRight -= 5;
+        this._obstacleRight += 5; // increase the right value, moving left
         this._obstacle.style.right = `${this._obstacleRight}px`;
 
         // Check if red obstacle has reached the same position as the dino
-        if (this._obstacleRight <= this._gameContainer.offsetWidth - this._player.offsetWidth) {
+        if (this._obstacleRight >= this._gameContainer.offsetWidth - this._player.offsetWidth) {
             // Start blue obstacle if it hasn't started yet
             this._blueStarted = true;
             this._gameContainer.removeChild(this._obstacle);
@@ -154,14 +154,14 @@ _gameLoop() {
             this._topObstacle = document.createElement('div');
             this._topObstacle.classList.add('top-obstacle');
             this._gameContainer.appendChild(this._topObstacle);
-            this._topObstacleRight = this._gameContainer.offsetWidth;
+            this._topObstacleRight = 0; // start from the right edge
         }
 
-        this._topObstacleRight -= 5;
+        this._topObstacleRight += 5; // increase the right value, moving left
         this._topObstacle.style.right = `${this._topObstacleRight}px`;
 
         // Check if blue obstacle has reached the same position as the dino
-        if (this._topObstacleRight <= this._gameContainer.offsetWidth - this._player.offsetWidth) {
+        if (this._topObstacleRight >= this._gameContainer.offsetWidth - this._player.offsetWidth) {
             // Start red obstacle if it hasn't started yet
             this._blueStarted = false;
             this._gameContainer.removeChild(this._topObstacle);
