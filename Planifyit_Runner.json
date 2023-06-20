@@ -43,4 +43,21 @@
             "description": "Called when the player's score is updated."
         }
     }
+    "dataBindings": {
+      "myDataBinding": {
+        "feeds": [
+          {
+            "id": "dimensions",
+            "description": "Dimensions",
+            "type": "dimension"
+          },
+          {
+            "id": "measures",
+            "description": "Measures",
+            "type": "mainStructureMember"
+          }
+        ]
+      }
+    }
+    
 }
