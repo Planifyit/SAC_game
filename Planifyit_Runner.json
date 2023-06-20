@@ -42,7 +42,7 @@
         "onScoreUpdate": {
             "description": "Called when the player's score is updated."
         }
-    }
+    },
     "dataBindings": {
       "myDataBinding": {
         "feeds": [
