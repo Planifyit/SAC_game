@@ -1,102 +1,52 @@
-# Planifyit Runner Widget README
+# Planifyit Runner Widget
 
-## Introduction
+![Planifyit Logo](https://planifyit.github.io/Pie_chart/PlanifyIT_Logo2.png)
 
-The Planifyit Runner Widget is a web component that allows you to integrate a simple runner game into your web application. It has a game character that tries to avoid obstacles and increases the score as the game progresses.
+## Overview
+Planifyit Runner Widget is an SAC custom widget for SAP Analytics Cloud that allows users to embed an interactive running game within their analytics dashboard. The widget features a running game where a player has to jump over obstacles and dunk to avoid top obstacles. It has start, jump, dunk, and pause functionalities and displays the score during gameplay.
 
-![Planifyit Runner Game](https://planifyit.github.io/Pie_chart/PlanifyIT_Logo2.png)
+## Version
+1.0.1
 
 ## Features
-
-- Start, pause, and replay game controls
-- Jump and dunk actions for the game character
-- Real-time score tracking
-- Top scores tracking using local storage
-- Collision detection between the character and obstacles
+- Interactive running game.
+- Jump and dunk controls to avoid obstacles.
+- Pause functionality to pause/resume the game.
+- Displays the score during gameplay.
+- Stores top scores in local storage.
 
 ## Getting Started
+### Add Widget to SAC
+To add this widget to your SAP Analytics Cloud dashboard, follow these steps:
+1. Download the `PlanifyitRunnerWidget.js` file.
+2. In your SAC dashboard, add a new custom widget and provide the required fields according to `Planifyit_Runner.json`.
 
-1. Include the Planifyit Runner Widget by adding the JavaScript file to your HTML:
-
-```html
-<script src="https://planifyit.github.io/SAC_game/PlanifyitRunnerWidget.js" integrity="" crossorigin="anonymous"></script>
-```
-
-2. Add the widget to your HTML by using its custom HTML tag:
-
-```html
-<planifyit-runner-widget></planifyit-runner-widget>
-```
-
-3. Customize the widget dimensions by setting the width and height attributes:
-
-```html
-<planifyit-runner-widget width="500" height="300"></planifyit-runner-widget>
-```
-
-## Properties
-
-- `width`: Integer that sets the width of the game container. Default is 300.
-- `height`: Integer that sets the height of the game container. Default is 400.
+### Configure Widget
+- **width**: (integer) The width of the game container. Default is 300.
+- **height**: (integer) The height of the game container. Default is 400.
 
 ## Methods
-
-- `startGame`: Call this method to start the Planifyit Runner game.
-- `endGame`: Call this method to end the current game.
-
-Example usage:
-
-```javascript
-document.querySelector('planifyit-runner-widget').startGame();
-```
+- **startGame**: Starts the Planifyit Runner game.
+- **endGame**: Ends the current game.
 
 ## Events
-
-- `onGameEnd`: This event is called when the game ends.
-- `onScoreUpdate`: This event is called when the player's score is updated.
-
-Example usage:
-
-```javascript
-const widget = document.querySelector('planifyit-runner-widget');
-widget.addEventListener('onGameEnd', function () {
-  console.log('Game Over');
-});
-```
+- **onGameEnd**: This event is called when the game ends.
+- **onScoreUpdate**: This event is called when the player's score is updated.
 
 ## Data Bindings
+- **myDataBinding**: This data binding can be used for further customization, with dimensions and measures as feeds.
 
-This widget can be configured with data bindings to dimensions and measures in the form of feeds.
+## Dependencies
+No external dependencies.
 
-Example:
-
-```javascript
-{
-  "myDataBinding": {
-    "feeds": [
-      {
-        "id": "dimensions",
-        "description": "Dimensions",
-        "type": "dimension"
-      },
-      {
-        "id": "measures",
-        "description": "Measures",
-        "type": "mainStructureMember"
-      }
-    ]
-  }
-}
-```
-
-## Contributing
-
-If you have suggestions for how the Planifyit Runner Widget could be improved, or want to report a bug, open an issue! Contributions are welcomed.
+## Vendor
+Planifyit
 
 ## License
-
 This project is licensed under the vendor "Planifyit".
 
 ## Support
+For support, please contact the vendor at [Planifyit Support](mailto:support@planifyit.com).
 
-For support or questions regarding the Planifyit Runner Widget, please contact the Planifyit team.
+## Disclaimer
+This widget is provided by Planifyit and has no affiliation with SAP. 
